@@ -1,0 +1,90 @@
+
+Notes
+=====
+
+Want to keep things simple,quick and useful. Didiwiki intended for personal
+use - Notes, Todos, basic PIM etc - functionality should reflect that.
+
+Keep deps lows, binary should just run - no dependance on external files. 
+Should just work. 
+
+Pending
+=====
+
+Apply Halski's '-' patch.
+
+WTF am I not doing this in didiwiki ?
+
+
+Stuff that would be nice to have
+=====
+
+- Auth
+  - basic http auth 
+    - set via user/pass in ~/.didiwiki/.htacess ?
+  - Limit by IP
+
+- Any secruity improvements in code. 
+
+- RSS feed of changes / searches ?
+
+- Simple REST uri like API for external getting/setting raw wiki pages
+
+  - didiwiki:8000/api/page/ get|set|exists|delete
+
+    <?xml version="1.0"?>
+    <page>
+    blah blah b    
+
+    </page>
+
+    * could allow param to just return data as text, is xml really needed *
+    * - xml could be a pain for shell scripts                             *
+
+  - didiwiki:8000/api/pages lists all pages
+    - could do the same as changes ?
+
+  - didiwiki:8000/api/search
+
+  - didiwiki:8000/api/changes
+
+
+- Rewrite Parser.
+  - can be much faster but its not that slow atm. 
+  - make generic, output text, docbook ( bloat - uneeded )
+                   - REST api would make it easy to write other 
+		     programs that did this. 
+
+- Wikipedia style icons after external links etc ( done in css )
+  - 'xxd' can convert pngs etc to c arrays useful for including
+    small images in binary. 
+
+- Also favicon.ico *DONE*, though better icon would be nice. 
+
+- Improve serach.
+
+- Interwiki style links ?
+
+
+
+Stuff thats a little more out there
+======
+
+- metadata on pages / tagging / tagging by dates
+  - used to build custom searchs, group stuff togeather
+    - more PIM like. 
+  - need to think more on this
+
+- #include 'wikipage' style directive ?
+
+- GTD tool, how would this work ?
+  - lists
+    - allow lists in pages to be referenced ?
+      - /pagename?list=#    referenced by number
+      - /pagename?list=name 
+        - How do we name a list though ?
+	  - *[listname] ?
+      - also deliver lists as RSS
+      - is this much use though ?
+
+- Templating, let user overide header and footer templates.    
