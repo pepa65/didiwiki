@@ -1,3 +1,14 @@
+2016-09-07 0.6 released by pepa65 <solusos@passchier.net>
+	Hosted on Github: https://github.com/pepa65/didiwiki
+	Version increased
+	Changed formatting & layout style
+	Only allow explicit wikilinks
+	Change italic markers from / to ^
+	Added link symbol to external links
+	Added some more recognized external link protocols
+	Adjusted WikiHelp and WikiHome
+	Tweaked the stylesheet and made it write out to didiwiki.css for modification
+
 2004-09-30 0.5 released. 
 
 2004-09-30  mallum,,,  <mallum@handhelds.org>

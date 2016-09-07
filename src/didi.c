@@ -1,25 +1,18 @@
 #include "didi.h"
 
-void 
-usage(char *progname)
+void usage(char *progname)
 {
-  fprintf(stderr, "usage..\n");
+	fprintf(stderr, "usage..\n");
 }
 
-int 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-  HttpRequest  *req  = NULL;
-  int           port = 8000;
-
+	HttpRequest *req = NULL;
+	int port = 8000;
   wiki_init();
-
-  if(argc > 1 && !strcmp(argv[1],"debug"))
-    req = http_request_new(); 	/* reads request from stdin */
-  else
-    req = http_server(port);    /* forks here */
-
+	// reads request from stdin, or forks
+  if (argc > 1 && !strcmp(argv[1],"debug")) req = http_request_new();
+	else req = http_server(port);
   wiki_handle_http_request(req);
-
   return 0;
 }

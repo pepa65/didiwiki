@@ -1,0 +1,12 @@
+Makefile
+config.h
+config.log
+config.status
+src/.deps/
+src/Makefile
+src/didi.o
+src/didiwiki
+src/http.o
+src/util.o
+src/wiki.o
+stamp-h1
