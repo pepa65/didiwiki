@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT(didiwiki, 0.5, [mallum@handhelds.org])
+AC_INIT(didiwiki, 0.6, [solusos@passchier.net])
 AC_CONFIG_SRCDIR([src/util.c])
 AC_CONFIG_HEADER([config.h])
 
@@ -42,6 +42,8 @@ src/Makefile
 
 echo
 echo "  NOTE:"
-echo "  If you are upgrading from a earlier version of DidiWiki, delete"
-echo "  \$HOME/.didiwiki/WikiHelp to get updated with the latest version."
+echo "  If you are upgrading from a earlier version of DidiWiki, delete:"
+echo "  - \$HOME/.didiwiki/Help to get the latest version of the Help page."
+echo "  - \$HOME/.didiwiki/Home if you want to reset your Home page."
+echo "  - \$HOME/.didiwiki/didiwiki.css to get the latest default stylesheet."
 echo

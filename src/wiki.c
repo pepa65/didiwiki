@@ -103,14 +103,15 @@ static char *check_for_link(char *line, int *skip_chars)
 				asprintf(&result, "<img src='%s' border='0'>", url);
 		else
 		{ // no image
-			char *extra_attr = "";
 			char *linksymbol = "&#x1f517;";
-			if (explicit) extra_attr = "title='External link' target='_blank'";
-			else linksymbol = "";
+			if (!explicit) linksymbol = "";
 			if (title)
-				asprintf(&result,"<a %s href='%s'>%s%s</a>", extra_attr, url, title, linksymbol);
+				if (explicit)
+					asprintf(&result,"<a title='%s' target='_blank' href='%s'>%s%s</a>", url, url, title, linksymbol);
+				else
+					asprintf(&result,"<a href='%s'>%s%s</a>", url, title, linksymbol);
 			else
-				asprintf(&result, "<a %s href='%s'>%s</a>", extra_attr, url, url);
+				asprintf(&result, "<a href='%s'>%s</a>", url, url);
 		}
 		return result;
 	}
@@ -628,8 +629,8 @@ void wiki_handle_http_request(HttpRequest *req)
 	util_dehttpize(page); // remove any encoding on the requested page name
 	if (!strcmp(page, "/"))
 	{
-		if (access("WikiHome", R_OK) != 0) wiki_redirect(res, "/WikiHome?create");
-		page = "/WikiHome";
+		if (access("Home", R_OK) != 0) wiki_redirect(res, "/Home?create");
+		page = "/Home";
 	}
 	if (!strcmp(page, "/didiwiki.css"))
 	{
@@ -734,8 +735,8 @@ int wiki_init(void)
 		}
 	chdir(datadir);
 	// Write Default Help + Home page and stylesheet if it doesn't exist
-	if (access("WikiHelp", R_OK) != 0) file_write("WikiHelp", HELPTEXT);
-	if (access("WikiHome", R_OK) != 0) file_write("WikiHome", HOMETEXT);
+	if (access("Help", R_OK) != 0) file_write("Help", HELPTEXT);
+	if (access("Home", R_OK) != 0) file_write("Home", HOMETEXT);
 	if (access("didiwiki.css", R_OK) != 0) file_write("didiwiki.css", CssData);
 	// Read in optional stylesheet
 	if (access("didiwiki.css", R_OK) == 0) CssData = file_read("didiwiki.css");

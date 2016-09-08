@@ -10,3 +10,5 @@ src/http.o
 src/util.o
 src/wiki.o
 stamp-h1
+autom4te.cache/
+config.h.in~

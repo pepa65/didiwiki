@@ -6,7 +6,7 @@
 	Change italic markers from / to ^
 	Added link symbol to external links
 	Added some more recognized external link protocols
-	Adjusted WikiHelp and WikiHome
+	Adjusted the Help and Home pages, removed dead links
 	Tweaked the stylesheet and made it write out to didiwiki.css for modification
 	Option for custom favicon.ico
 

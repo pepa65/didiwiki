@@ -24,10 +24,10 @@
 <tr>\n\
 <td align='left' ><strong>%s</strong> %s</td>\n\
 <td align='right' >\n\
-<a href='/WikiHome' title='Visit Wiki home page. [alt-z]' accesskey='z'>Home</a> |\n\
+<a href='/Home' title='Visit Wiki home page. [alt-z]' accesskey='z'>Home</a> |\n\
 <a href='/Changes' title='List recent changes in the wiki. [alt-r]' accesskey='r' >Changes</a> | \n\
 <a href='/Create' title='Create a new wiki page by title. [alt-c]' accesskey='c'>New</a> | \n\
-<a href='/WikiHelp' title='Get help on wiki usage and formatting.'>Help</a> |\n\
+<a href='/Help' title='Get help on wiki usage and formatting.'>Help</a> |\n\
 <input type='text' name='expr' size='15' placeholder='Search' title='Enter text to search for and press return.' /></td>\n\
 </tr>\n\
 </table>\n\
@@ -57,36 +57,30 @@ document.editform.wikitext.scrollTop = document.editform.wikitext.scrollHeight;\
 
 #define HOMETEXT "\
 ==Welcome to DidiWiki\n\
-^DidiWiki^ is a small and simple [http://en.wikipedia.org/wiki/Wiki WikiWikiWeb]\n\
+^DidiWiki^ is a small and simple [http://en.wikipedia.org/wiki/Wiki Wiki]\n\
 implementaion. It's intended for personal note taking, todo lists and any other uses you can think of.\n\
 \n\
-To learn more about what a [http://www.c2.com/cgi/wiki?WikiWikiWeb WikiWikiWeb] \
-is, read about [http://www.c2.com/cgi/wiki?WhyWikiWorks WhyWikiWorks] and the \
-[http://www.c2.com/cgi/wiki?WikiNature WikiNature]. Also, consult the \
-[http://www.c2.com/cgi/wiki?WikiWikiWebFaq WikiWikiWebFaq].\n\
-\n\
-For an example what a WikiWiki entry looks like in text form you can [?edit edit] \
-this page. Also see [WikiHelp] for infomation on usage and formatting rules. Use \
-the [WikiSandbox] to experiment.\n\
+For an example what a DidiWiki entry looks like in text form you can [?edit edit] \
+this page. Also see [Help] for infomation on usage and formatting rules.\n\
 \n\
 ^DidiWiki^ is written by [mailto:mallum@o-hand.com Matthew Allum] in C and is \
 free software, released under the [http://www.gnu.org GNU] [http://www.gnu.org/copyleft/gpl.html GPL]. \
-It uses a formatting style similar to that of [http://www.kwiki.org kwiki] and \
+This release was enhanced by [mailto:solusos@passchier.net pepa65].\n\
+DidiWiki uses a formatting style similar to that of \
+[http://search.cpan.org/~ingy/Kwiki-0.39/lib/Kwiki.pm kwiki] and \
 some webserver code from [http://www.cvstrac.org cvstrac]\n"
 
 #define HELPTEXT "\
 =Quick Guide \n\
 Top toolbar usage\n\
 * [?edit Edit] Allows you to edit pages ( see below for rules )\n\
-* [/WikiHome Home] Takes you to the wiki front page\n\
+* [/Home Home] Takes you to the wiki front page\n\
 * [/Changes Changes] Lists the pages changed by date\n\
 * [/Create New] Creates a new wiki page by title\n\
-* [/WikiHelp Help] Takes you to this help page\n\
+* [/Help Help] Takes you to this help page\n\
 \n\
 Use the text entry box to perform a very simple keyword search on the\n\
 Wiki contents. Hit return to activate the search.\n\
-\n\
-Use the WikiSandbox to practice formatting.\n\
 \n\
 ----\n\
 =Formatting rules\n\
