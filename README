@@ -14,8 +14,49 @@ run DidiWiki as a standalone binary right from the src dir. On startup it'll
 tell you the address to point your browser at. You should then be ready to go.
 
 If upgrading from an earlier version its a good idea to delete
-~/.didiwiki/DidiHelp (and maybe ~/.didiwiki/WikiHome) before running so you get
-the latest versions of the help file -- unless you've changed it..!
+DidiHelp (and maybe WikiHome and didiwiki.css) from ~/.didiwiki before running
+so you get the latest versions -- unless you've changed one of those files..!
+
+
+Notes & Explanations
+====================
+
+- Pages are stored in ~/.didiwiki (you can override this by setting the env
+  variable DIDIWIKIHOME to a valid path).
+  - The stylesheet can be modify there: didiwiki.css
+  - A customized favicon.ico added there will be used instead of the inbuilt one
+
+- The webserver part is heavily based on cvstrac's internal server,
+  following the same kind of process:
+
+  - It's a pretty simple lightweight forking server. A child process is
+    forked to handle each http request.
+
+  - These forked children are assumed to not be around for very long (
+    less than a second ), thus no real attempt is made to free up
+    memory in these child processes.
+
+  - It's probably not very secure at all. !!PLEASE DONT RUN AS ROOT!!
+
+- The code uses asprintf in a couple of places. I don't know how portable
+  this is to non Linux systems. If its a problem to you feel free to send
+  patches.
+
+- You can debug segv's by running like 'didiwiki debug' which will not
+  start the http server, it existing in a single process but expecting the
+  http request on stdin.
+
+- The formatting style is very similar to that of kwiki's - I just like
+  kwiki :-)
+
+- Formatting syntax changes:
+  - for italics use ^ instead of / (the slash is used too much)
+  - No CamelCase for links, only text between [ and ] (spaces allowed)
+
+- I wrote it in C as I've mostly forgotten Python, Perl etc. 
+  (and I wanted it to fit easily on a PDA).
+
+- If you want to contribute, please check the TODO !
 
 
 Remote API
@@ -53,38 +94,3 @@ http://didiwiki/api/search?expr=XXX
 
  Like the above but lists only pages which contain 'expr'
 
-
-Notes & Excuses
-===============
-
-- If you want to contribute, please check the TODO !
-
-- Pages are stored in ~/.didiwiki (you can override this by setting
-  'DIDIWIKIHOME' env var to a valid path). You can modify didiwiki.css
-  in this directory to override the inbuilt stylesheet.
-
-- The webserver part is heavily based on cvstrac's internal server,
-  following the same kind of process:
-
-  - It's a pretty simple lightweight forking server. A child process is
-    forked to handle each http request.
-
-  - These forked children are assumed to not be around for very long (
-    less than a second ), thus no real attempt is made to free up
-    memory in these child processes.
-
-  - It's probably not very secure at all. !!PLEASE DONT RUN AS ROOT!!
-
-- The code uses asprintf in a couple of places. I don't know how portable
-  this is to non Linux systems. If its a problem to you feel free to send
-  patches.
-
-- You can debug segv's by running like 'didiwiki debug' which will not
-  start the http server, it existing in a single process but expecting the
-  http request on stdin.
-
-- The formatting style is very similar to that of kwiki's - I just like
-  kwiki :-)
-
-- I wrote it in C as I've mostly forgotten Python, Perl etc. 
-  (and I wanted it to fit easily on a PDA).
