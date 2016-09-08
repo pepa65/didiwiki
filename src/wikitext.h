@@ -45,12 +45,11 @@
 
 #define EDITFORM "\
 <form method=POST action='%s' name='editform'>\n\
-<textarea name='wikitext' rows='20' cols='80' wrap='virtual'>%s</textarea>\n\
+<textarea name='wikitext' rows='40' cols='80' wrap='virtual'>%s</textarea>\n\
 <p><input type='submit' value='Save' title='[alt-k]' accesskey='k'></p>\n\
 </form>\n\
 <script language='JavaScript'>\n\
 <!--\n\
-/* Give the textarea focus... less mouse usage but may annoy people? */\n\
 document.editform.wikitext.focus()\n\
 document.editform.wikitext.scrollTop = document.editform.wikitext.scrollHeight;\n\
 //-->\n\
@@ -168,15 +167,15 @@ Lines prefixed with a space are unformatted ( Like examples on this page )\n\
 #define STYLESHEET "\
 body{font-family:Verdana, Arial, Helvetica, sans-serif; font-size:110%; color:#111; margin:2px; padding:2px;}\n\
 #header{font-size:90%; background-color:#eee; border:1px solid #aaa; font-family:Verdana, Arial, Helvetica, sans-serif; padding:5px; margin-bottom:20px;}\n\
-#header input{margin:0px; padding:0; background-color:#eea; border:1px solid #aaa; font-size:90%;}\n\
+#header input{margin:0px; padding:0; background-color:#ffe; border:1px solid #aaa; font-size:90%;}\n\
 #footer{font-size:10px; color:#ddd; margin-top:40px; width:100%; text-align:center;}\n\
 table.wikitable{ background-color:#fff; border:1px solid #aaa;}\n\
 table.wikitable td{ background-color:#fff; border:1px solid #aaa;}\n\
 pre{font-family:monospace; background-color:#eee; padding:2px; padding-left:10px; margin-left:20px; margin-right:20px;}\n\
 hr{height:1px; color:#aaa; background-color:#aaa; border:0; margin:0.2em 5px 0.2em 5px;}\n\
 form{border:none; margin:0;}\n\
-textarea{ border:1px solid #aaa; color:#000; background-color:#fff; width:100%; padding:0.2em; overflow:auto;}\n\
-input{margin-top:1px; padding:0 0.4em !important; background-color:#fff; border:1px solid #aaa;}\n\
+textarea{ border:1px solid #aaa; color:#000; background-color:#ffe; width:100%; padding:0.2em; overflow:auto;}\n\
+input{margin-top:1px; padding:0 0.4em !important; background-color:#ffe; border:1px solid #aaa;}\n\
 a,ulink{color:#333; text-decoration:none; border-bottom:1px #333 dotted; display:inline;}\n\
 a:hover{color:#333; text-decoration:none; border-bottom:1px #000 solid;}\n\
 a:visited{color:#333;}"
