@@ -480,7 +480,7 @@ void wiki_show_changes_page(HttpResponse *res)
 {
 	WikiPageList **pages = NULL;
 	int n_pages, i;
-	wiki_show_header(res, "Changes");
+	wiki_show_header(res, "List");
 	pages = wiki_get_pages(&n_pages, NULL);
 	for (i=0; i<n_pages; i++)
 	{
@@ -670,7 +670,7 @@ void wiki_handle_http_request(HttpRequest *req)
 		http_response_send(res);
 		exit(0);
 	}
-	if (!strcmp(page, "Changes"))
+	if (!strcmp(page, "List"))
 	{
 		// TODO list recent changes
 		wiki_show_changes_page(res);

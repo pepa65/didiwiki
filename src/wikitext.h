@@ -24,10 +24,10 @@
 <tr>\n\
 <td align='left' class='title'>%s</td>\n\
 <td align='right' >\n\
-<a class='button' href='?edit' title='Edit this page's content. [alt-j]' accesskey='j'>Edit</a> \n\
-<a class='button' href='/Home' title='Visit Wiki home page. [alt-z]' accesskey='z'>Home</a> \n\
-<a class='button' href='/Changes' title='List recent changes in the wiki. [alt-r]' accesskey='r' >Changes</a> \n\
-<a class='button' href='/Create' title='Create a new wiki page by title. [alt-c]' accesskey='c'>New</a> \n\
+<a class='button' href='?edit' title='Edit this page [alt-j]' accesskey='j'>Edit</a> \n\
+<a class='button' href='/Home' title='Go to Home page [alt-z]' accesskey='z'>Home</a> \n\
+<a class='button' href='/List' title='List files most recent changed pages [alt-r]' accesskey='r' >List</a> \n\
+<a class='button' href='/Create' title='Create new page [alt-c]' accesskey='c'>Create</a> \n\
 <a class='button' href='/Help' title='Get help on wiki usage and formatting.'>Help</a> \n\
 <input type='text' name='expr' size='15' placeholder='Search' title='Enter text to search for and press return.' /></td>\n\
 </tr>\n\
@@ -79,14 +79,14 @@ some webserver code from [http://www.cvstrac.org cvstrac]\n"
 #define HELPTEXT "\
 =Quick Guide \n\
 Top toolbar usage:\n\
-* [?edit Edit] Allows you to edit pages (see below for formatting rules)\n\
-* [/Home Home] Takes you to the wiki front page\n\
-* [/Changes Changes] Lists the pages changed by date\n\
-* [/Create New] Creates a new wiki page by title\n\
-* [/Help Help] Takes you to this help page\n\
+* [?edit Edit] Edit pages (formatting rules below)\n\
+* [Home] Displays the home page\n\
+* [List] Lists the most recent changed pages\n\
+* [Create] Creates a new page\n\
+* [Help] This help page\n\
 \n\
 Use the text entry box to perform a very simple keyword search on the \
-Wiki contents. Hit return to activate the search.\n\
+Wiki contents. Hit return to start the search.\n\
 \n\
 ----\n\
 =Formatting rules\n\
