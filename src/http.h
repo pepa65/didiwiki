@@ -1,10 +1,13 @@
 #ifndef _HAVE_HTTP_HEADER
 #define _HAVE_HTTP_HEADER
 
+#define PORTSTART 8000
+#define PORTEND 8088
+
 typedef struct HttpResponse HttpResponse;
 typedef struct HttpRequest HttpRequest;
 typedef struct HttpRequestParam HttpRequestParam;
-HttpRequest *http_server(int iPort);
+HttpRequest *http_server(void);
 HttpRequest *http_request_new(void);
 char *http_request_param_get(HttpRequest *req, char *key);
 char *http_request_get_uri(HttpRequest *req);

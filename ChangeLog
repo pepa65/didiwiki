@@ -4,11 +4,12 @@
 	Changed formatting & layout style
 	Only allow explicit wikilinks
 	Change italic markers from / to ^
-	Added link symbol to external links
+	Added link symbol to external links and show url when hovering
 	Added some more recognized external link protocols
 	Adjusted the Help and Home pages, removed dead links
 	Tweaked the stylesheet and made it write out to didiwiki.css for modification
 	Option for custom favicon.ico
+	Port range separately defined
 
 2004-09-30 0.5 released. 
 

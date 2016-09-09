@@ -22,12 +22,13 @@
 <form method='get' action='/Search'>\n\
 <table border='0' width='100%%'>\n\
 <tr>\n\
-<td align='left' ><strong>%s</strong> %s</td>\n\
+<td align='left' class='title'>%s</td>\n\
 <td align='right' >\n\
-<a href='/Home' title='Visit Wiki home page. [alt-z]' accesskey='z'>Home</a> |\n\
-<a href='/Changes' title='List recent changes in the wiki. [alt-r]' accesskey='r' >Changes</a> | \n\
-<a href='/Create' title='Create a new wiki page by title. [alt-c]' accesskey='c'>New</a> | \n\
-<a href='/Help' title='Get help on wiki usage and formatting.'>Help</a> |\n\
+<a class='button' href='?edit' title='Edit this page's content. [alt-j]' accesskey='j'>Edit</a> \n\
+<a class='button' href='/Home' title='Visit Wiki home page. [alt-z]' accesskey='z'>Home</a> \n\
+<a class='button' href='/Changes' title='List recent changes in the wiki. [alt-r]' accesskey='r' >Changes</a> \n\
+<a class='button' href='/Create' title='Create a new wiki page by title. [alt-c]' accesskey='c'>New</a> \n\
+<a class='button' href='/Help' title='Get help on wiki usage and formatting.'>Help</a> \n\
 <input type='text' name='expr' size='15' placeholder='Search' title='Enter text to search for and press return.' /></td>\n\
 </tr>\n\
 </table>\n\
@@ -38,15 +39,20 @@
 #define PAGEFOOTER "</div><div id='footer'>DidiWiki version " VERSION "</div>\n"
 
 #define CREATEFORM "\
-<form method=POST action='/Create'>\n\
-<input type='text' name='title' />\n\
-<p><input type='submit' value='Create' /></p>\n\
-</form>\n"
+<form method=POST action='/Create' name='create'>\n\
+<input type='text' name='title' name='title' />\n\
+<p><input type='submit' class='button' value='Create' /></p>\n\
+</form>\n\
+<script language='JavaScript'>\n\
+<!--\n\
+document.create.title.focus()\n\
+//-->\n\
+</script>\n"
 
 #define EDITFORM "\
 <form method=POST action='%s' name='editform'>\n\
 <textarea name='wikitext' rows='40' cols='80' wrap='virtual'>%s</textarea>\n\
-<p><input type='submit' value='Save' title='[alt-k]' accesskey='k'></p>\n\
+<p><input type='submit' value='Save' class='button' title='[alt-k]' accesskey='k'></p>\n\
 </form>\n\
 <script language='JavaScript'>\n\
 <!--\n\
@@ -72,75 +78,82 @@ some webserver code from [http://www.cvstrac.org cvstrac]\n"
 
 #define HELPTEXT "\
 =Quick Guide \n\
-Top toolbar usage\n\
-* [?edit Edit] Allows you to edit pages ( see below for rules )\n\
+Top toolbar usage:\n\
+* [?edit Edit] Allows you to edit pages (see below for formatting rules)\n\
 * [/Home Home] Takes you to the wiki front page\n\
 * [/Changes Changes] Lists the pages changed by date\n\
 * [/Create New] Creates a new wiki page by title\n\
 * [/Help Help] Takes you to this help page\n\
 \n\
-Use the text entry box to perform a very simple keyword search on the\n\
+Use the text entry box to perform a very simple keyword search on the \
 Wiki contents. Hit return to activate the search.\n\
 \n\
 ----\n\
 =Formatting rules\n\
 \n\
-=Top Level Heading\n\
-  =Top Level Heading (H1)\n\
-==Second Level Heading\n\
-  ==Second Level Heading (H2)\n\
-More levels \n\
-  === (H3), ==== (H4) etc\n\
+=Top level heading\n\
+ =Top level heading (h1)\n\
+==Second level heading\n\
+ ==Second level heading (h2)\n\
+===Third level heading\n\
+ ===Third level heading (h3)\n\
+====More levels\n\
+ ====More levels: ==== (h4), ===== (h5), etc.\n\
 ----\n\
 The horizontal lines in this page are made with 4 or more dashes:\n\
  ---- Horizonal line\n\
 ----\n\
 \n\
-Paragraphs are seperated by an empty line\n\
+Paragraphs are separated by an empty line.\n\
 \n\
-Like this. Another paragraph.\n\
+Like this: another paragraph.\n\
 \n\
- Paragraphs are separated by a blank line.\n\
+ Paragraphs are separated by an empty line.\n\
 \n\
- Like this. Another paragraph.\n\
+ Like this: another paragraph.\n\
 ----\n\
 *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
-  *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
+ *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
 ^*Combination of bold and italics*^\n\
-  ^*Combination of bold and italics*^\n\
+ ^*Combination of bold and italics*^\n\
 ----\n\
 \n\
 [WikiLinks] are formed by a string surrounded by square brackets.\n\
  [WikiLinks] are formed by a string surrounded by square brackets.\n\
-External links begin with http:// like http://www.freepan.org \
-or with https:// ftp:// file:// mailto:// or mailto:\n\
- External links begin with http:// like http://www.freepan.org \
- or with https:// ftp:// file:// mailto:// or mailto:\n\
-External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\
- External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\
-A space-less string prefaced with ! will not be linkified, bolded, italicized etc. \
+External links begin with !http:// like http://www.freepan.org \
+or with !https:// !ftp:// !file:// !mailto:// or !mailto:\n\n\
+ External links begin with http:// like http://www.freepan.org\
+ or with https:// ftp:// file:// mailto:// or mailto:\n\n\
+External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\n\
+ External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\n\
+A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
 like: !/no-i/ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
- A space-less string prefaced with ' !' will not be linkified, bolded, italicized etc.\
+ A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
  like: !^no-i^ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
 ----\n\
 \n\
 Links to images display the image:\n\
 \n\
-http://www.google.com/images/logo.gif\n\
- http://www.google.com/images/logo.gif\n\
+http://www.gnu.org/graphics/heckert_gnu.small.png\n\
+ http://www.gnu.org/graphics/heckert_gnu.small.png\n\
 ----\n\
-Unordered lists begin with a '* '. The number of asterisks determines the level:\n\
+Links to images with title link to the image:\n\
+\n\
+[http://www.gnu.org/graphics/heckert_gnu.small.png Gnu]\n\
+ [http://www.gnu.org/graphics/heckert_gnu.small.png Gnu]\n\
+----\n\
+Unordered lists begin with a * and the number of asterisks determines the level:\n\
 * foo\n\
 * bar\n\
 ** boom\n\
 ** bam\n\
 * baz\n\
 \n\
-  * foo\n\
-  * bar\n\
-  ** boom\n\
-  ** bam\n\
-  * baz\n\
+ * foo\n\
+ * bar\n\
+ ** boom\n\
+ ** bam\n\
+ * baz\n\
 \n\
 Ordered lists work the same, but use a '#'\n\
 ----\n\
@@ -151,30 +164,33 @@ Tables begin the line with a '|' and before every new column after.\n\
  | row:1,col:1 | row:1,col:2\n\
  | row:2,col:1 | row:2,col:2\n\
 ---\n\
-<Inline> <html> <is> <escaped>.\n\
-\n\
+Inline html <i>is</i> <b>escaped</b>.\n\
+ Inline html <i>is</i> <b>escaped</b>.\n\
 ----\n\
-Lines prefixed with a space are unformatted ( Like examples on this page )\n\
+Lines prefixed with a space are unformatted (like the examples on this page)\n\
 \n\
 ----\n"
 
 #define STYLESHEET "\
-body{font-family:Verdana, Arial, Helvetica, sans-serif; font-size:110%; color:#111; margin:2px; padding:2px;}\n\
-#header{font-size:90%; background-color:#eee; border:1px solid #aaa; font-family:Verdana, Arial, Helvetica, sans-serif; padding:5px; margin-bottom:20px;}\n\
+body{font-family:Verdana, Arial, Helvetica, sans-serif; color:#000; margin:0;}\n\
+#header{font-size:90%; background-color:#ddd; border:1px solid #aaa; padding:0em; margin:0.4em;}\n\
 #header input{margin:0px; padding:0; background-color:#ffe; border:1px solid #aaa; font-size:90%;}\n\
-#footer{font-size:10px; color:#ddd; margin-top:40px; width:100%; text-align:center;}\n\
-table.wikitable{ background-color:#fff; border:1px solid #aaa;}\n\
-table.wikitable td{ background-color:#fff; border:1px solid #aaa;}\n\
-pre{font-family:monospace; background-color:#eee; padding:2px; padding-left:10px; margin-left:20px; margin-right:20px;}\n\
+#wikidata{font-size:100%; color:#111; margin:0.4em; padding:0.1em;}\n\
+#footer{font-size:60%; color:#777; background-color:#eee; padding-top: 2em; padding-bottom: 100em; margin-top:5em; width:100%; text-align:center;}\n\
+pre{font-family:monospace; background-color:#eee; padding:0.5em;}\n\
+.button{padding-left:0.3em; padding-right:0.3em; margin-left:0.3em; margin-right:0.3em;}\n\
+.title{font-size:120%; font-weight:bold;}\n\
+table.wikitable{background-color:#fff; border:1px solid #aaa;}\n\
+table.wikitable td{background-color:#fff; border:1px solid #aaa;}\n\
 hr{height:1px; color:#aaa; background-color:#aaa; border:0; margin:0.2em 5px 0.2em 5px;}\n\
 form{border:none; margin:0;}\n\
-textarea{ border:1px solid #aaa; color:#000; background-color:#ffe; width:100%; padding:0.2em; overflow:auto;}\n\
+textarea{border:1px solid #aaa; color:#000; background-color:#ffe; width:90%; padding:0.2em; overflow:auto;}\n\
 input{margin-top:1px; padding:0 0.4em !important; background-color:#ffe; border:1px solid #aaa;}\n\
 a,ulink{color:#333; text-decoration:none; border-bottom:1px #333 dotted; display:inline;}\n\
 a:hover{color:#333; text-decoration:none; border-bottom:1px #000 solid;}\n\
 a:visited{color:#333;}"
 
-/* use xdd -i favicon.ico to generate */
+// use xdd -i favicon.ico to generate
 unsigned char FaviconData[] = {
   0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x10, 0x10, 0x02, 0x00, 0x00, 0x00,
   0x00, 0x00, 0xb0, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x28, 0x00,
@@ -194,7 +210,8 @@ unsigned char FaviconData[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
-//unsigned int FaviconDataLen = 198;
-#define FAVICONSIZE 198;
+#define FAVICONSIZE 198
+
+#define LINKSYMBOL "&#x1f517;"
 
 #endif

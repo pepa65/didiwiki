@@ -42,7 +42,7 @@ static char *get_line_from_string(char **lines, int *line_len)
 static char *check_for_link(char *line, int *skip_chars)
 {
 	char *start = line, *p = line, *url = NULL, *title = NULL, *result = NULL;
-	int explicit = 0;
+	int external = 0;
 	if (*p == '[')
 	{
 		*p = '\0';
@@ -56,62 +56,66 @@ static char *check_for_link(char *line, int *skip_chars)
 				|| !strncasecmp(p, "file://", 7)
 				|| *p == '?' || *p == '/') // Some special local links starts with ? or /
 		{ // External link, can be followed by title after space
-			if (*p != '?' && *p != '/') explicit = 1;
+			if (*p != '?' && *p != '/') external = 1;
 			while (*p != ']' && *p != '\0' && !isspace(*p)) p++;
+			// title will come after space (if there is a space/title)
+			if (isspace(*p))
+			{ //title
+				*p = '\0';
+				title = ++p; 
+				while (  *p != ']' && *p != '\0' ) p++;
+				*p = '\0';
+				p++;
+			}
+			else // no title
+			{
+				*p = '\0';
+				p++;
+			}
 		}
-		// Local link, same as title, spaces allowed
-		else while (*p != ']' && *p != '\0') p++;
-		// p is at ] or end-of-line, or at the space (followed by the title)
-		if (isspace(*p))
-		{ // explicit link, get the title
-			*p = '\0';
-			title = ++p;
+		else // no title, simple wiki link
+		{
 			while (*p != ']' && *p != '\0') p++;
+			*p = '\0';
+			p++;
 		}
-		*p = '\0';
-		p++;
 	}
-	// No [ so check for plain explicit link
+	// No [ so check for bare external link
 	else if (!strncasecmp(p, "http://", 7)
 			|| !strncasecmp(p, "https://", 8)
 			|| !strncasecmp(p, "ftp://", 6)
 			|| !strncasecmp(p, "mailto://", 9)
 			|| !strncasecmp(p, "mailto:", 7)
 			|| !strncasecmp(p, "file://", 7))
-	{ // Explicit link without [
-		explicit = 1;
+	{ // Bare external link
+		external = 1;
 		while (*p != '\0' && !isspace(*p)) p++;
-		*p = '\0';
-		p++;
+		url = malloc(sizeof(char) * ((p - start) + 2) );
+		memset(url, 0, sizeof(char) * ((p - start) + 2));
+		strncpy(url, start, p - start);
+		*start = '\0';
 	}
 	if (url != NULL)
 	{
 		int len = strlen(url);
 		*skip_chars = p - start;
 		// is it an image?
-		if (!strncmp(url+len-4, ".gif", 4)
+		if (!title && (!strncmp(url+len-4, ".gif", 4)
 				|| !strncmp(url+len-4, ".GIF", 4)
 				|| !strncmp(url+len-4, ".PNG", 4)
 				|| !strncmp(url+len-4, ".JPG", 4)
 				|| !strncmp(url+len-5, ".JPEG", 5)
 				|| !strncmp(url+len-4, ".png", 4)
 				|| !strncmp(url+len-4, ".jpg", 4)
-				|| !strncmp(url+len-5, ".jpeg", 5))
-			if (title)
-				asprintf(&result, "<a href='%s'><img src='%s' border='0'></a>", title, url);
-			else
-				asprintf(&result, "<img src='%s' border='0'>", url);
+				|| !strncmp(url+len-5, ".jpeg", 5)))
+			// display image
+			asprintf(&result, "<img src='%s' border='0'>", url);
 		else
 		{ // no image
-			char *linksymbol = "&#x1f517;";
-			if (!explicit) linksymbol = "";
-			if (title)
-				if (explicit)
-					asprintf(&result,"<a title='%s' target='_blank' href='%s'>%s%s</a>", url, url, title, linksymbol);
-				else
-					asprintf(&result,"<a href='%s'>%s%s</a>", url, title, linksymbol);
-			else
-				asprintf(&result, "<a href='%s'>%s</a>", url, url);
+			if (!title) title = url;
+			if (external)
+				asprintf(&result,"<a title='%s' target='_blank' href='%s'>%s%s</a>", url, url, title, LINKSYMBOL);
+			else asprintf(&result,"<a href='%s'>%s</a>", url, title);
 		}
 		return result;
 	}
@@ -188,10 +192,10 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 		char *line_start = line;
 		int skip_to_content = 0;
 		// process any initial wiki chars at line beginning
-		if (pre_on && !isspace(*line) && *line != '\0')
+		if (pre_on && !isspace(*line))
 		{
 			// close any preformatting if already on
-			http_response_printf(res, "\n</pre>\n");
+			http_response_printf(res, "</pre>\n");
 			pre_on = 0;
 		}
 		// Handle ordered & unordered list, code is a bit mental...
@@ -258,10 +262,10 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 					http_response_printf(res, "\n");
 					continue;
 				}
-				else if (open_para) http_response_printf(res, "\n</p><p>\n");
+				else if (open_para) http_response_printf(res, "</p><p>");
 				else
 				{
-					http_response_printf(res, "\n<p>\n");
+					http_response_printf(res, "<p>");
 					open_para = 1;
 				}
 			}
@@ -278,6 +282,7 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 		else if (*line == '=')
 		{
 			while (*line == '=') {header_level++; line++;}
+			if (header_level > 6) header_level = 6;
 			http_response_printf(res, "<h%d>", header_level);
 			p = line;
 		}
@@ -397,7 +402,7 @@ void wiki_show_page(HttpResponse *res, char *wikitext, char *page)
 {
 	char *html_clean_wikitext = NULL;
 	http_response_printf_alloc_buffer(res, strlen(wikitext)*2);
-	wiki_show_header(res, page, TRUE);
+	wiki_show_header(res, page);
 	html_clean_wikitext = util_htmlize(wikitext, strlen(wikitext));
 	wiki_print_data_as_html(res, html_clean_wikitext);
 	wiki_show_footer(res);
@@ -407,7 +412,7 @@ void wiki_show_page(HttpResponse *res, char *wikitext, char *page)
 
 void wiki_show_edit_page(HttpResponse *res, char *wikitext, char *page)
 {
-	wiki_show_header(res, page, FALSE);
+	wiki_show_header(res, page);
 	if (wikitext == NULL) wikitext = "";
 	http_response_printf(res, EDITFORM, page, wikitext);
 	wiki_show_footer(res);
@@ -417,7 +422,7 @@ void wiki_show_edit_page(HttpResponse *res, char *wikitext, char *page)
 
 void wiki_show_create_page(HttpResponse *res)
 {
-	wiki_show_header(res, "Create New Page", FALSE);
+	wiki_show_header(res, "Create New Page");
 	http_response_printf(res, "%s", CREATEFORM);
 	wiki_show_footer(res);
 	http_response_send(res);
@@ -444,6 +449,7 @@ WikiPageList **wiki_get_pages(int *n_pages, char *expr)
 	while (n--)
 	{
 		if ((namelist[n]->d_name)[0] == '.'
+				|| !strcmp(namelist[n]->d_name, "favicon.ico")
 				|| !strcmp(namelist[n]->d_name, "didiwiki.css")) goto cleanup;
 		if (expr != NULL)
 		{ // Super Simple Search
@@ -474,7 +480,7 @@ void wiki_show_changes_page(HttpResponse *res)
 {
 	WikiPageList **pages = NULL;
 	int n_pages, i;
-	wiki_show_header(res, "Changes", FALSE);
+	wiki_show_header(res, "Changes");
 	pages = wiki_get_pages(&n_pages, NULL);
 	for (i=0; i<n_pages; i++)
 	{
@@ -498,7 +504,7 @@ void wiki_show_search_results_page(HttpResponse *res, char *expr)
 	int n_pages, i;
 	if (expr == NULL || strlen(expr) == 0)
 	{
-		wiki_show_header(res, "Search", FALSE);
+		wiki_show_header(res, "Search");
 		http_response_printf(res, "No Search Terms supplied");
 		wiki_show_footer(res);
 		http_response_send(res);
@@ -510,15 +516,13 @@ void wiki_show_search_results_page(HttpResponse *res, char *expr)
 		for (i=0; i<n_pages; i++)
 			if (!strcmp(pages[i]->name, expr)) // redirect on page name match
 				wiki_redirect(res, pages[i]->name);
-		wiki_show_header(res, "Search", FALSE);
-		for (i=0; i<n_pages; i++) http_response_printf(res,
-				"<a href='%s'>%s</a><br />\n",
-				pages[i]->name,
-				pages[i]->name);
+		wiki_show_header(res, "Search");
+		for (i=0; i<n_pages; i++)
+			http_response_printf(res, "<a href='%s'>%s</a><br />\n", pages[i]->name, pages[i]->name);
 	}
 	else
 	{
-		wiki_show_header(res, "Search", FALSE);
+		wiki_show_header(res, "Search");
 		http_response_printf(res, "No matches");
 	}
 	wiki_show_footer(res);
@@ -532,11 +536,10 @@ void wiki_show_template(HttpResponse *res, char *template_data)
 	// vars: $title (page title), $include() (?), $pages
 }
 
-void wiki_show_header(HttpResponse *res, char *page_title, int want_edit)
+void wiki_show_header(HttpResponse *res, char *page_title)
 {
 	http_response_printf(res, HTMLHEAD, page_title);
-	http_response_printf(res, PAGEHEADER, page_title,
-			(want_edit) ? " (<a href='?edit' title='Edit this wiki page contents. [alt-j]' accesskey='j'>Edit</a>) " : "");
+	http_response_printf(res, PAGEHEADER, page_title);
 }
 
 void wiki_show_footer(HttpResponse *res)

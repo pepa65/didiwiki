@@ -256,8 +256,7 @@ void http_response_printf(HttpResponse *res, const char *format, ...)
 	vasprintf(&tmp, format, ap);
 	va_end(ap);
 	if ((res->data_len + strlen(tmp) + 1) < res->data_len_alloced)
-		if (res->data_len)
-			memcpy(res->data + res->data_len - 1, tmp, strlen(tmp)+1);
+		if (res->data_len) memcpy(res->data + res->data_len - 1, tmp, strlen(tmp)+1);
 		else memcpy(res->data, tmp, strlen(tmp)+1);
 	else if (!res->data_len) // no data printed yet
 	{
@@ -313,7 +312,7 @@ void http_response_send(HttpResponse *res)
 #define MAX_PARALLEL 5
 
 // Implement an HTTP server daemon.
-HttpRequest *http_server(int iPort)
+HttpRequest *http_server(void)
 {
 	int listener; // The server socket
 	int connection; // A socket for each connection
@@ -324,11 +323,11 @@ HttpRequest *http_server(int iPort)
 	struct timeval delay; // How long to wait inside select()
 	struct sockaddr_in inaddr; // The socket address
 	int reuse = 1;
-	int n = 0;
+	int p = PORTSTART;
 	memset(&inaddr, 0, sizeof(inaddr));
 	inaddr.sin_family = AF_INET;
 	inaddr.sin_addr.s_addr = INADDR_ANY;
-	inaddr.sin_port = htons(iPort);
+	inaddr.sin_port = htons(p);
 	listener = socket(AF_INET, SOCK_STREAM, 0);
 	fprintf(stderr,"DidiWiki firing up ...\n");
 	if (listener < 0)
@@ -339,25 +338,25 @@ HttpRequest *http_server(int iPort)
 #ifdef SO_REUSEADDR
 	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
 #endif
-	while (n < 10)
+	while (p <= PORTEND)
 	{
-		fprintf(stderr,"Attempting to use port %d .. ", iPort+n);
-		inaddr.sin_port = htons(iPort + n);
+		fprintf(stderr,"Attempting to use port %d .. ", p);
+		inaddr.sin_port = htons(p);
 		if (bind(listener, (struct sockaddr*)&inaddr, sizeof(inaddr)) < 0)
 		{
 			fprintf(stderr,"Failed!\n");
-			n++;
+			p++;
 			continue;
 		}
 		fprintf(stderr,"Success!\n");
 		break;
 	}
-	if (n == 10)
+	if (p > PORTEND)
 	{
 		fprintf(stderr,"Can't bind to any ports, giving up.\n");
 		exit(1);
 	}
-	fprintf(stderr,"DidiWiki Started. Please point your browser at http://localhost:%i\n", iPort+n);
+	fprintf(stderr,"DidiWiki Started. Please point your browser at http://localhost:%i\n", p);
 	listen(listener,10);
 	while (1)
 	{
