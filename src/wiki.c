@@ -547,7 +547,7 @@ void wiki_show_footer(HttpResponse *res)
 	http_response_printf(res, "%s", PAGEFOOTER);
 	http_response_printf(res, "</body>\n</html>\n");
 }
-
+/*
 void wiki_handle_rest_call(HttpRequest *req, HttpResponse *res, char *func)
 {
 	if (func != NULL && *func != '\0')
@@ -621,7 +621,7 @@ void wiki_handle_rest_call(HttpRequest *req, HttpResponse *res, char *func)
 	http_response_printf(res, "<html><body>Failed</body></html>\n");
 	http_response_send(res);
 	return;
-}
+}*/
 
 void wiki_handle_http_request(HttpRequest *req)
 {
@@ -652,8 +652,8 @@ void wiki_handle_http_request(HttpRequest *req)
 		http_response_send(res);
 		exit(0);
 	}
-	page = page + 1; // skip slash
-	if (!strncmp(page, "api/", 4))
+	page++; // skip slash
+	/*if (!strncmp(page, "api/", 4))
 	{
 		char *p;
 		page += 4;
@@ -661,7 +661,7 @@ void wiki_handle_http_request(HttpRequest *req)
 			if (*p=='?') { *p ='\0'; break; }
 			wiki_handle_rest_call(req, res, page);
 			exit(0);
-	}
+	}*/
 	// Safety: issue a malformed request for any paths (there shouldn't need to be any)
 	if (strchr(page, '/'))
 	{
