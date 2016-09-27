@@ -90,46 +90,58 @@ Wiki contents. Hit return to start the search.\n\
 \n\
 ----\n\
 = _Formatting rules_\n\
- = _Formatting rules_\n\n\
+ = _Formatting rules_\n\
+\n\
 =Top level heading\n\
- =Top level heading (h1)\n\n\
+ =Top level heading (h1)\n\
+\n\
 ==Second level heading\n\
- ==Second level heading (h2)\n\n\
+ ==Second level heading (h2)\n\
+\n\
 ===Third level heading\n\
- ===Third level heading (h3)\n\n\
+ ===Third level heading (h3)\n\
+\n\
 ====More levels\n\
  ====More levels: ==== (h4), ===== (h5), etc.\n\
 ----\n\
 The horizontal lines in this page are made with 4 or more dashes:\n\
  ---- Horizonal line\n\
 ----\n\
-Paragraphs are wrapped long lines.\n\n\
-Newlines are inserted at the end of each line.\n\n\
+Paragraphs are wrapped long lines.\n\
+\n\
+Newlines are inserted at the end of each line.\n\
+\n\
  Paragraphs are wrapped long lines.\n\
  \n\
  Newlines are inserted at the end of each line.\n\
 ----\n\
 *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
- *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\n\
+ *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
+\n\
 ^*Combination of bold and italics*^\n\
  ^*Combination of bold and italics*^\n\
 ----\n\
 [WikiLinks] are formed by a string surrounded by square brackets.\n\
- [WikiLinks] are formed by a string surrounded by square brackets.\n\n\
+ [WikiLinks] are formed by a string surrounded by square brackets.\n\
+\n\
 External links begin with !http:// like http://www.freepan.org \
 or with !https:// !ftp:// !file:// !mailto:// or !mailto:\n\
  External links begin with http:// like http://www.freepan.org\
- or with https:// ftp:// file:// mailto:// or mailto:\n\n\
+ or with https:// ftp:// file:// mailto:// or mailto:\n\
+\n\
 External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\
- External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\n\
+ External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\
+\n\
 A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
 like: !/no-i/ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
  A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
  like: !^no-i^ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
 ----\n\
-Links to images display the image:\n\n\
+Links to images display the image:\n\
+\n\
 http://www.gnu.org/graphics/heckert_gnu.small.png\n\
- http://www.gnu.org/graphics/heckert_gnu.small.png\n\n\
+ http://www.gnu.org/graphics/heckert_gnu.small.png\n\
+\n\
 Links to images with title link to the image:\n\
 [http://www.gnu.org/graphics/heckert_gnu.small.png Gnu]\n\
  [http://www.gnu.org/graphics/heckert_gnu.small.png Gnu]\n\
@@ -140,6 +152,7 @@ Unordered lists begin with a * and the number of asterisks determines the level:
 ** boom\n\
 ** bam\n\
 * baz\n\
+\n\
  * foo\n\
  * bar\n\
  ** boom\n\
