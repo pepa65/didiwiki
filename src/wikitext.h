@@ -77,7 +77,7 @@ DidiWiki uses a formatting style similar to that of \
 some webserver code from [http://www.cvstrac.org cvstrac]\n"
 
 #define HELPTEXT "\
-=Quick Guide \n\
+=Quick Guide\n\
 Top toolbar usage:\n\
 * [?edit Edit] Edit pages (formatting rules below)\n\
 * [Home] Displays the home page\n\
@@ -89,56 +89,48 @@ Use the text entry box to perform a very simple keyword search on the \
 Wiki contents. Hit return to start the search.\n\
 \n\
 ----\n\
-=Formatting rules\n\
-\n\
+= _Formatting rules_\n\
+ = _Formatting rules_\n\n\
 =Top level heading\n\
- =Top level heading (h1)\n\
+ =Top level heading (h1)\n\n\
 ==Second level heading\n\
- ==Second level heading (h2)\n\
+ ==Second level heading (h2)\n\n\
 ===Third level heading\n\
- ===Third level heading (h3)\n\
+ ===Third level heading (h3)\n\n\
 ====More levels\n\
  ====More levels: ==== (h4), ===== (h5), etc.\n\
 ----\n\
 The horizontal lines in this page are made with 4 or more dashes:\n\
  ---- Horizonal line\n\
 ----\n\
-\n\
-Paragraphs are separated by an empty line.\n\
-\n\
-Like this: another paragraph.\n\
-\n\
- Paragraphs are separated by an empty line.\n\
-\n\
- Like this: another paragraph.\n\
+Paragraphs are wrapped long lines.\n\n\
+Newlines are inserted at the end of each line.\n\n\
+ Paragraphs are wrapped long lines.\n\
+ \n\
+ Newlines are inserted at the end of each line.\n\
 ----\n\
 *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
- *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\
+ *Bold text*, ^italic text^, _underscore text_ and -strikethrough-.\n\n\
 ^*Combination of bold and italics*^\n\
  ^*Combination of bold and italics*^\n\
 ----\n\
-\n\
 [WikiLinks] are formed by a string surrounded by square brackets.\n\
- [WikiLinks] are formed by a string surrounded by square brackets.\n\
+ [WikiLinks] are formed by a string surrounded by square brackets.\n\n\
 External links begin with !http:// like http://www.freepan.org \
-or with !https:// !ftp:// !file:// !mailto:// or !mailto:\n\n\
+or with !https:// !ftp:// !file:// !mailto:// or !mailto:\n\
  External links begin with http:// like http://www.freepan.org\
  or with https:// ftp:// file:// mailto:// or mailto:\n\n\
-External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\n\
+External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\
  External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\n\
 A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
 like: !/no-i/ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
  A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
  like: !^no-i^ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
 ----\n\
-\n\
-Links to images display the image:\n\
-\n\
+Links to images display the image:\n\n\
 http://www.gnu.org/graphics/heckert_gnu.small.png\n\
- http://www.gnu.org/graphics/heckert_gnu.small.png\n\
-----\n\
+ http://www.gnu.org/graphics/heckert_gnu.small.png\n\n\
 Links to images with title link to the image:\n\
-\n\
 [http://www.gnu.org/graphics/heckert_gnu.small.png Gnu]\n\
  [http://www.gnu.org/graphics/heckert_gnu.small.png Gnu]\n\
 ----\n\
@@ -148,17 +140,14 @@ Unordered lists begin with a * and the number of asterisks determines the level:
 ** boom\n\
 ** bam\n\
 * baz\n\
-\n\
  * foo\n\
  * bar\n\
  ** boom\n\
  ** bam\n\
  * baz\n\
-\n\
 Ordered lists work the same, but use a '#'\n\
 ----\n\
 Tables begin the line with a '|' and before every new column after.\n\
-\n\
 | row:1,col:1 | row:1,col:2\n\
 | row:2,col:1 | row:2,col:2\n\
  | row:1,col:1 | row:1,col:2\n\
@@ -167,8 +156,7 @@ Tables begin the line with a '|' and before every new column after.\n\
 Inline html <i>is</i> <b>escaped</b>.\n\
  Inline html <i>is</i> <b>escaped</b>.\n\
 ----\n\
-Lines prefixed with a space are unformatted (like the examples on this page)\n\
-\n\
+Lines prefixed with a space are unformatted (like the examples in light gray on this page)\n\
 ----\n"
 
 #define STYLESHEET "\
@@ -177,12 +165,13 @@ body{font-family:Verdana, Arial, Helvetica, sans-serif; color:#000; margin:0;}\n
 #header input{margin:0px; padding:0; background-color:#ffe; border:1px solid #aaa; font-size:90%;}\n\
 #wikidata{font-size:100%; color:#111; margin:0.4em; padding:0.1em;}\n\
 #footer{font-size:60%; color:#777; background-color:#eee; padding-top: 2em; padding-bottom: 100em; margin-top:5em; width:100%; text-align:center;}\n\
+h1,h2,h3,h4,h5,h6{margin-top:0; margin-bottom:0.5em;}\n\
 pre{font-family:monospace; background-color:#eee; padding:0.5em;}\n\
 .button{padding-left:0.3em; padding-right:0.3em; margin-left:0.3em; margin-right:0.3em;}\n\
 .title{font-size:120%; font-weight:bold;}\n\
-table.wikitable{background-color:#fff; border:1px solid #aaa;}\n\
-table.wikitable td{background-color:#fff; border:1px solid #aaa;}\n\
-hr{height:1px; color:#aaa; background-color:#aaa; border:0; margin:0.2em 5px 0.2em 5px;}\n\
+table{background-color:#fff; border:1px solid #aaa;}\n\
+table td{background-color:#fff; border:1px solid #aaa;}\n\
+hr{height:2px; color:#aaa; background-color:#aaa; border:0; margin:0.5em 0 0.5em 0;}\n\
 form{border:none; margin:0;}\n\
 textarea{border:1px solid #aaa; color:#000; background-color:#ffe; width:90%; padding:0.2em; overflow:auto;}\n\
 input{margin-top:1px; padding:0 0.4em !important; background-color:#ffe; border:1px solid #aaa;}\n\
