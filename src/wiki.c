@@ -230,7 +230,7 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 		if (*line == '|')
 		{
 			if (table_on==0)
-				http_response_printf(res, "<table cellspacing='0' cellpadding='4'>\n");
+				http_response_printf(res, "<table class='wiki' cellspacing='0' cellpadding='4'>\n");
 			table_on=1;
 			http_response_printf(res, "<tr><td>");
 			line++;

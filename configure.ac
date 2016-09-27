@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT(didiwiki, 0.6, [solusos@passchier.net])
+AC_INIT(didiwiki, 0.61, [solusos@passchier.net])
 AC_CONFIG_SRCDIR([src/util.c])
 AC_CONFIG_HEADER([config.h])
 

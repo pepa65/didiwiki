@@ -63,13 +63,13 @@ document.editform.wikitext.scrollTop = document.editform.wikitext.scrollHeight;\
 
 #define HOMETEXT "\
 ==Welcome to DidiWiki\n\
-^DidiWiki^ is a small and simple [http://en.wikipedia.org/wiki/Wiki Wiki]\n\
+*DidiWiki* is a small and simple [http://en.wikipedia.org/wiki/Wiki Wiki]\n\
 implementaion. It's intended for personal note taking, todo lists and any other uses you can think of.\n\
 \n\
 For an example what a DidiWiki entry looks like in text form you can [?edit edit] \
 this page. Also see [Help] for infomation on usage and formatting rules.\n\
 \n\
-^DidiWiki^ is written by [mailto:mallum@o-hand.com Matthew Allum] in C and is \
+DidiWiki is written by [mailto:mallum@o-hand.com Matthew Allum] in C and is \
 free software, released under the [http://www.gnu.org GNU] [http://www.gnu.org/copyleft/gpl.html GPL]. \
 This release was enhanced by [mailto:solusos@passchier.net pepa65].\n\
 DidiWiki uses a formatting style similar to that of \
@@ -169,8 +169,8 @@ h1,h2,h3,h4,h5,h6{margin-top:0; margin-bottom:0.5em;}\n\
 pre{font-family:monospace; background-color:#eee; padding:0.5em;}\n\
 .button{padding-left:0.3em; padding-right:0.3em; margin-left:0.3em; margin-right:0.3em;}\n\
 .title{font-size:120%; font-weight:bold;}\n\
-table{background-color:#fff; border:1px solid #aaa;}\n\
-table td{background-color:#fff; border:1px solid #aaa;}\n\
+table.wiki{background-color:#fff; border:1px solid #aaa;}\n\
+table.wiki td{background-color:#fff; border:1px solid #aaa;}\n\
 hr{height:2px; color:#aaa; background-color:#aaa; border:0; margin:0.5em 0 0.5em 0;}\n\
 form{border:none; margin:0;}\n\
 textarea{border:1px solid #aaa; color:#000; background-color:#ffe; width:90%; padding:0.2em; overflow:auto;}\n\
