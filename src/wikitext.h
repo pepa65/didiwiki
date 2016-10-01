@@ -133,7 +133,7 @@ External links can have a title after the first space, like [http://www.freepan.
  External links can have a title after the first space, like [http://www.freepan.org FreePAN]\n\
 \n\
 A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
-like: !/no-i/ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
+like: !^no-i^ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
  A space-less string prefaced with ! will not be linkified, bolded, italicized etc.\n\
  like: !^no-i^ !*no-b* !_no !underline!_ ![NoWikiLink] !http//escap.ed etc.\n\
 ----\n\
