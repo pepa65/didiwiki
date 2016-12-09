@@ -1,9 +1,7 @@
 #ifndef _HAVE_HTTP_HEADER
 #define _HAVE_HTTP_HEADER
-
 #define PORTSTART 8000
 #define PORTEND 8088
-
 typedef struct HttpResponse HttpResponse;
 typedef struct HttpRequest HttpRequest;
 typedef struct HttpRequestParam HttpRequestParam;
@@ -22,5 +20,6 @@ void http_response_set_data(HttpResponse *res, void *data, int data_len);
 void http_response_append_header(HttpResponse *res, char *header);
 void http_response_send_headers(HttpResponse *res);
 void http_response_send(HttpResponse *res);
-
+void sigint(int sig);
+void sigterm(int sig);
 #endif

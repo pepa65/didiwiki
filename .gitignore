@@ -13,3 +13,5 @@ stamp-h1
 autom4te.cache/
 config.h.in~
 configure.lineno
+favicon.ppm
+favicon.ico

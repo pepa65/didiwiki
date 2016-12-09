@@ -18,8 +18,8 @@
 #include "wikitext.h"
 
 static char *CssData=STYLESHEET;
-static char *Favicon=FaviconData;
-static int FaviconSize=FAVICONSIZE;
+static unsigned char *Favicon=FaviconData;
+int FaviconSize=FAVICONLEN;
 
 static char *get_line_from_string(char **lines)
 {
@@ -353,9 +353,11 @@ line_content:
 
 int wiki_redirect(HttpResponse *res, char *location)
 {
-	int header_len=strlen(location)+14;
+	char *location_enc = util_httpize(location);
+	int header_len=strlen(location_enc)+14;
 	char *header=alloca(sizeof(char)*header_len);
-	snprintf(header, header_len, "Location: %s\r\n", location);
+	snprintf(header, header_len, "Location: %s\r\n", location_enc);
+	free(location_enc);
 	http_response_append_header(res, header);
 	http_response_printf(res, "<html>\n<p>Redirect to %s</p>\n</html>\n", location);
 	http_response_set_status(res, 302, "Moved Temporarily");
@@ -420,7 +422,7 @@ WikiPageList **wiki_get_pages(int *n_pages, char *expr)
 		{ // Super Simple Search
 			char *data=NULL;
 			if ((data=file_read(namelist[n]->d_name)) != NULL)
-				if (strstr(data, expr) == NULL)
+				if (strcasestr(data, expr) == NULL)
 					if (strcmp(namelist[n]->d_name, expr) != 0) goto cleanup;
 		}
 		stat(namelist[n]->d_name, &st);
@@ -478,10 +480,9 @@ void wiki_show_search_results_page(HttpResponse *res, char *expr)
 	pages=wiki_get_pages(&n_pages, expr);
 	if (pages)
 	{
-		for (i=0; i<n_pages; i++)
-			if (!strcmp(pages[i]->name, expr)) // redirect on page name match
-				wiki_redirect(res, pages[i]->name);
 		wiki_show_header(res, "Search");
+		// if only one page is found, redirect to it
+		if (n_pages == 1) wiki_redirect(res, pages[0]->name);
 		for (i=0; i<n_pages; i++)
 			http_response_printf(res, "<a href='%s'>%s</a><br />\n", pages[i]->name, pages[i]->name);
 	}
@@ -537,7 +538,6 @@ void wiki_handle_http_request(HttpRequest *req)
 	{
 		// Return favicon
 		http_response_set_content_type(res, "image/ico");
-		//http_response_set_data(res, FaviconData, FaviconDataLen);
 		http_response_set_data(res, Favicon, FaviconSize);
 		http_response_send(res);
 		exit(0);

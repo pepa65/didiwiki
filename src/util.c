@@ -167,3 +167,36 @@ char *util_htmlize(const char *in, int n)
 	out[i]=0;
 	return out;
 }
+
+int validURIchar(char c)
+{
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '.' ||
+			c == '-' || c == '_' || c == '~' || c == '?'; // ? not allowed but not encoded
+}
+
+// Encodes characters which aren't allowed in URIs
+char urienc[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
+char *util_httpize(const char* url)
+{
+	// Find length of result string
+	int i;
+	int len = 0;
+	for(i = 0; url[i]; ++i) {
+		if (validURIchar(url[i])) len++;
+		else len += 3;
+	}
+	char *out = malloc(sizeof(char)*(len+1));
+	if (out==0) return 0;
+	out[len]=0;
+	int j = 0;
+	for (i = 0; url[i]; ++i) {
+		if (validURIchar(url[i])) out[j++] = url[i];
+		else {
+			out[j++] = '%';
+			out[j++] = urienc[(url[i]&0xF0)>>4];
+			out[j++] = urienc[url[i]&0x0F];
+		}
+	}
+	return out;
+}

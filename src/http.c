@@ -329,7 +329,7 @@ HttpRequest *http_server(void)
 	inaddr.sin_addr.s_addr=INADDR_ANY;
 	inaddr.sin_port=htons(p);
 	listener=socket(AF_INET, SOCK_STREAM, 0);
-	fprintf(stderr,"DidiWiki firing up ...\n");
+	fprintf(stderr,"DidiWiki starting...\n");
 	if (listener < 0)
 	{
 		fprintf(stderr,"Can't create a socket\n");
@@ -340,7 +340,7 @@ HttpRequest *http_server(void)
 #endif
 	while (p <= PORTEND)
 	{
-		fprintf(stderr,"Attempting to use port %d .. ", p);
+		fprintf(stderr,"Attempting to use port %d...", p);
 		inaddr.sin_port=htons(p);
 		if (bind(listener, (struct sockaddr*)&inaddr, sizeof(inaddr)) < 0)
 		{
@@ -353,10 +353,10 @@ HttpRequest *http_server(void)
 	}
 	if (p > PORTEND)
 	{
-		fprintf(stderr,"Can't bind to any ports, giving up.\n");
+		fprintf(stderr,"Can't bind to any ports, giving up\n");
 		exit(1);
 	}
-	fprintf(stderr,"DidiWiki Started. Please point your browser at http://localhost:%i\n", p);
+	fprintf(stderr,"DidiWiki started on http://localhost:%i\n", p);
 	listen(listener,10);
 	while (1)
 	{

@@ -1,3 +1,10 @@
+2016-12-09 released by pepa65 <solusos@passchier.net>
+	More cleanup
+	New default favicon
+	Added Debian patches:
+	- redirect_patch
+	- search_engine_patch
+
 2016-09-27 0.61 released by pepa65 <solusos@passchier.net>
 	Improved rendering
 	Adjusted formatting
