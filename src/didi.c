@@ -2,7 +2,7 @@
 
 void usage()
 {
-	fprintf(stderr, "Usage: didiwiki [debug]\n");
+	fprintf(stderr, "Usage: didiwiki [help] [debug]\n");
 	exit(1);
 }
 
