@@ -139,7 +139,7 @@ HttpRequest *http_request_new(void)
 	char *token, *content_type, *post_data, *z;
 	int i, len;
 	struct sockaddr_in remoteName;
-	int size=sizeof(struct sockaddr_in);
+	socklen_t size=sizeof(struct sockaddr_in);
 	char request_line[2048]; // A single line of input
 	HttpRequest *req=NULL;
 	req=malloc(sizeof(HttpRequest));

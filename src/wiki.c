@@ -141,7 +141,7 @@ static int file_write(char *filename, char *data)
 {
 	FILE* fp;
 	int bytes_written=0;
-	int len=strlen(data)+1;
+	int len=strlen(data);
 	if (!(fp=fopen(filename, "wb"))) return -1;
 	while (len > 0)
 	{
