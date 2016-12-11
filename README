@@ -1,4 +1,4 @@
-DidiWiki 0.62
+DidiWiki 0.63
 =============
 
 DidiWiki is a small and simple WikiWikiWeb implementation written in C.
@@ -9,13 +9,14 @@ and pointing your browser at it.
 Installation
 ============
 
-To build, do the usual ./configure and make. You can then make install or
-run DidiWiki as a standalone binary right from the src dir. On startup it'll
-tell you the address to point your browser at. You should then be ready to go.
+To build, do:
+autoconf; ./configure; make
+You can then (sudo) make install or run DidiWiki directly from src/didiwiki
+On startup the URL for your browser will be printed.
 
-If upgrading from an earlier version its a good idea to delete Help
-(and maybe Home and didiwiki.css) from ~/.didiwiki before running
-so you get the latest versions -- unless you've changed one of those files..!
+If upgrading from an earlier version, it's a good idea to delete Help, Home and
+didiwiki.css from ~/.didiwiki (or $DIDIWIKIHOME) in case of any updated
+versions -- unless you want to keep your modifications to those files..!
 
 Notes & Explanations
 ====================
