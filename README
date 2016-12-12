@@ -10,8 +10,10 @@ Installation
 ============
 
 To build, do:
-autoconf; ./configure; make
-You can then (sudo) make install or run DidiWiki directly from src/didiwiki
+ ./configure; make
+To install, run:
+ make install  # as root
+Or run DidiWiki directly from src/didiwiki
 On startup the URL for your browser will be printed.
 
 If upgrading from an earlier version, it's a good idea to delete Help, Home and

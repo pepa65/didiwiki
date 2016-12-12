@@ -4,7 +4,6 @@ config.h.in~
 config.log
 config.status
 configure.lineno
-configure
 stamp-h1
 autom4te.cache/
 src/.deps/
