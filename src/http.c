@@ -16,6 +16,7 @@
  */
 
 #include "didi.h"
+#include "wikitext.h"
 
 struct HttpRequestParam {
 	char *key;
@@ -329,7 +330,7 @@ HttpRequest *http_server(void)
 	inaddr.sin_addr.s_addr=INADDR_ANY;
 	inaddr.sin_port=htons(p);
 	listener=socket(AF_INET, SOCK_STREAM, 0);
-	fprintf(stderr,"DidiWiki starting...\n");
+	fprintf(stderr,"%s starting...\n", NAME);
 	if (listener < 0)
 	{
 		fprintf(stderr,"Can't create a socket\n");
@@ -356,7 +357,7 @@ HttpRequest *http_server(void)
 		fprintf(stderr,"Can't bind to any ports, giving up\n");
 		exit(1);
 	}
-	fprintf(stderr,"DidiWiki started on http://localhost:%i\n", p);
+	fprintf(stderr,"%s started on http://localhost:%i\n", NAME, p);
 	listen(listener,10);
 	while (1)
 	{

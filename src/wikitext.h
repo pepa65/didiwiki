@@ -16,6 +16,7 @@
 
 #ifndef _HAVE_WIKI_TEXT_HEADER
 #define _HAVE_WIKI_TEXT_HEADER
+#define NAME "DidiWiki"
 
 #define PAGEHEADER "\
 <div id='header'>\n\
@@ -36,7 +37,7 @@
 </div>\n\
 <div id='wikidata'>\n"
 
-#define PAGEFOOTER "</div><div id='footer'>DidiWiki version " VERSION "</div>\n"
+#define PAGEFOOTER "</div><div id='footer'><a title='" NAME " home page' href='" PACKAGE_URL "' target='_blank'>" NAME " version " VERSION "</a></div>\n"
 
 #define CREATEFORM "\
 <form method=POST action='/Create' name='create'>\n\
@@ -62,17 +63,17 @@ document.editform.wikitext.scrollTop = document.editform.wikitext.scrollHeight;\
 </script>\n"
 
 #define HOMETEXT "\
-==Welcome to DidiWiki\n\
-*DidiWiki* is a small and simple [http://en.wikipedia.org/wiki/Wiki Wiki]\n\
+==Welcome to " NAME "\n\
+*" NAME "* is a small and simple [http://en.wikipedia.org/wiki/Wiki Wiki]\n\
 implementaion. It's intended for personal note taking, to-do lists and any other uses you can think of.\n\
 \n\
-For an example what a DidiWiki entry looks like in text form you can [?edit edit] \
+For an example what a " NAME " entry looks like in text form you can [?edit edit] \
 this page. Also see [Help] for infomation on usage and formatting rules.\n\
 \n\
-DidiWiki was written by [mailto:mallum@o-hand.com Matthew Allum] in C and is \
+" NAME " was written by [mailto:mallum@o-hand.com Matthew Allum] in C and is \
 free software, released under the [http://www.gnu.org GNU] [http://www.gnu.org/copyleft/gpl.html GPL]. \
 This release was enhanced by [mailto:solusos@passchier.net pepa65].\n\
-DidiWiki uses a formatting style similar to that of \
+" NAME " uses a formatting style similar to that of \
 [http://search.cpan.org/~ingy/Kwiki-0.39/lib/Kwiki.pm kwiki] and \
 some webserver code from [http://www.cvstrac.org cvstrac]\n"
 
@@ -177,7 +178,7 @@ body{font-family:Verdana, Arial, Helvetica, sans-serif; color:#000; margin:0;}\n
 #header{font-size:90%; background-color:#ddd; border:1px solid #aaa; padding:0em; margin:0.4em;}\n\
 #header input{margin:0px; padding:0; background-color:#ffe; border:1px solid #aaa; font-size:90%;}\n\
 #wikidata{font-size:100%; color:#111; margin:0.4em; padding:0.1em;}\n\
-#footer{font-size:60%; color:#777; background-color:#eee; padding-top: 2em; padding-bottom: 100em; margin-top:5em; width:100%; text-align:center;}\n\
+#footer{font-size:60%; background-color:#eee; padding-top: 2em; padding-bottom: 120em; margin-top:5em; width:100%; text-align:center;}\n\
 h1,h2,h3,h4,h5,h6{margin-top:0; margin-bottom:0.5em;}\n\
 pre{font-family:monospace; background-color:#eee; padding:0.5em;}\n\
 .button{padding-left:0.3em; padding-right:0.3em; margin-left:0.3em; margin-right:0.3em;}\n\
@@ -201,18 +202,18 @@ static unsigned char FaviconData[] = {
   0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x00, 0xff, 0xff,
-  0x00, 0x00, 0xcd, 0xcd, 0x00, 0x00, 0x84, 0x84, 0x00, 0x00, 0xa4, 0xa4,
+  0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0xce, 0xce, 0x00, 0x00, 0x84, 0x84,
   0x00, 0x00, 0xa4, 0xa4, 0x00, 0x00, 0xa4, 0xa4, 0x00, 0x00, 0xa4, 0xa4,
-  0x00, 0x00, 0x84, 0x84, 0x00, 0x00, 0xc7, 0xc7, 0x00, 0x00, 0xe4, 0xe4,
-  0x00, 0x00, 0xe4, 0xe4, 0x00, 0x00, 0xc7, 0xc7, 0x00, 0x00, 0xcf, 0xcf,
-  0x00, 0x00, 0x8f, 0x8f, 0x00, 0x00, 0x9f, 0x9f, 0x00, 0x00, 0xff, 0xff,
+  0x00, 0x00, 0xa4, 0xa4, 0x00, 0x00, 0x84, 0x84, 0x00, 0x00, 0xc7, 0xc7,
+  0x00, 0x00, 0xe4, 0xe4, 0x00, 0x00, 0xe4, 0xe4, 0x00, 0x00, 0xcd, 0xcd,
+  0x00, 0x00, 0xcf, 0xcf, 0x00, 0x00, 0x9f, 0x9f, 0x00, 0x00, 0xff, 0xff,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
+}; // to assemble this into a file: echo -ne "x\HHx\HH..." >favicon.ico
 #define FAVICONLEN 198;
 
 #define LINKSYMBOL "&#x1f517;"
