@@ -50,3 +50,4 @@ Notes & Explanations
 
 - It was written in C as to fit easily on a PDA..!
 
+- To fully clean the build directory: make maintainer-clean
