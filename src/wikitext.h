@@ -17,6 +17,7 @@
 #ifndef _HAVE_WIKI_TEXT_HEADER
 #define _HAVE_WIKI_TEXT_HEADER
 #define NAME "DidiWiki"
+#define HOME "https://github.com/pepa65/didiwiki"
 
 #define PAGEHEADER "\
 <div id='header'>\n\
@@ -37,7 +38,7 @@
 </div>\n\
 <div id='wikidata'>\n"
 
-#define PAGEFOOTER "</div><div id='footer'><a title='" NAME " home page' href='" PACKAGE_URL "' target='_blank'>" NAME " version " VERSION "</a></div>\n"
+#define PAGEFOOTER "</div><div id='footer'><a title='" NAME " home page' href='" HOME "' target='_blank'>" NAME " version " VERSION "</a></div>\n"
 
 #define CREATEFORM "\
 <form method=POST action='/Create' name='create'>\n\
