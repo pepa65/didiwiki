@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT(didiwiki, 0.64, [solusos@passchier.net])
+AC_INIT(DidiWiki, 0.65, solusos@passchier.net, didiwiki, https://github.com/pepa65/didiwiki)
 AC_CONFIG_SRCDIR([src/util.c])
 AC_CONFIG_HEADER([config.h])
 
@@ -42,8 +42,8 @@ src/Makefile
 
 echo
 echo "  NOTE:"
-echo "  If you are upgrading from a earlier version of DidiWiki, delete:"
-echo "  - \$HOME/.didiwiki/Help to get the latest version of the Help page."
-echo "  - \$HOME/.didiwiki/Home if you want to reset your Home page."
-echo "  - \$HOME/.didiwiki/didiwiki.css to get the latest default stylesheet."
+echo "  If you are upgrading from a earlier version of $PACKAGE, delete the"
+echo "  Home and Help pages and the CSS stylesheet in the home directory of"
+echo "  $PACKAGE, in order to use the ones that are built-in to the $PACKAGE"
+echo "  binary -- unless you want to keep local modifications of those files."
 echo

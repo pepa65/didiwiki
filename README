@@ -1,4 +1,4 @@
-DidiWiki 0.64
+DidiWiki 0.65
 =============
 
 DidiWiki is a small and simple WikiWikiWeb implementation written in C.
@@ -11,22 +11,23 @@ Installation
 
 To build, do:
  ./configure; make
-To install, run:
+To install, do:
  make install  # as root
-Or run DidiWiki directly from src/didiwiki
+Or run DidiWiki directly from src/didiwiki.
 On startup the URL for your browser will be printed.
 
 If upgrading from an earlier version, it's a good idea to delete Help, Home and
-didiwiki.css from ~/.didiwiki (or $DIDIWIKIHOME) in case of any updated
+the didiwiki.css from ~/.didiwiki (or $DIDIWIKIHOME) in case of any updated
 versions -- unless you want to keep your modifications to those files..!
 
 Notes & Explanations
 ====================
 
-- Pages are stored in $HOME/.didiwiki (you can override this by setting the
-  environment variable DIDIWIKIHOME to a valid path).
-  - The stylesheet can be modify there: didiwiki.css
-  - A customized favicon.ico added there will be used instead of the inbuilt one
+- Pages are stored in $HOME/.didiwiki (or in the directory in $DIDIWIKIHOME
+  when didiwiki is started).
+  - The CSS stylesheet there can be modified: didiwiki.css
+  - The file didiwiki.ico added there will be used instead as a favicon instead
+    of the inbuilt one.
 
 - The webserver part is heavily based on cvstrac's internal server, following
   the same kind of process:
@@ -44,6 +45,8 @@ Notes & Explanations
   start the http server, existing in a single process but expecting the
   http requests on stdin.
 
+- Rudimentary usage is printed when running 'didiwiki help'.
+
 - The formatting style is very similar to that of kwiki.
 
 - Formatting syntax changes:
@@ -53,3 +56,5 @@ Notes & Explanations
 - It was written in C as to fit easily on a PDA..!
 
 - To fully clean the build directory: make maintainer-clean
+	- If configure gets deleted, autoconf will build it again, but
+	  PACKAGE_URL will be lost

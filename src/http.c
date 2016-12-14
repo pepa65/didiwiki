@@ -93,11 +93,11 @@ static void http_request_parse_params (HttpRequest *req, char *data, int termina
 		while (*data && *data != '=' && *data != terminator) data++;
 		if (*data == '=')
 		{
-			*data='\0';
+			*data=0;
 			data++;
 			val= data;
 			while (*data && *data != terminator) data++;
-			if (*data) {*data='\0'; data++;}
+			if (*data) {*data=0; data++;}
 			util_dehttpize(val);
 			http_request_add_param(req, key, val);
 		}
@@ -172,12 +172,12 @@ HttpRequest *http_request_new(void)
 	{
 		char *key=NULL, *val=NULL;
 		key=util_extract_token(request_line, &val);
-		if (key == NULL || *key == '\0') break;
+		if (key == NULL || *key == 0) break;
 		// strip any spacing around key
 		while (isspace(*val)) val++;
 		i=strlen(val);
 		while (i>0 && isspace(val[i-1])) i--;
-		val[i]='\0';
+		val[i]=0;
 		// and lower case it
 		for(i=0; key[i]; i++) key[i]=tolower(key[i]);
 		if (!strcmp(key,"user-agent:"))
@@ -207,7 +207,7 @@ HttpRequest *http_request_new(void)
 			malformed_request();
 		post_data=malloc(len+1);
 		len=fread(post_data, 1, len, stdin);
-		post_data[len]='\0';
+		post_data[len]=0;
 		http_request_parse_params (req, post_data, '&');
 	}
 	if (getenv("HTTP_COOKIE"))
@@ -308,17 +308,13 @@ void http_response_send(HttpResponse *res)
 	if (res->data) fwrite(res->data, 1, res->data_len, stdout);
 }
 
-// Maximum number of child processes that we can have running
-// at one time before we start slowing things down.
-#define MAX_PARALLEL 5
-
 // Implement an HTTP server daemon.
 HttpRequest *http_server(void)
 {
 	int listener; // The server socket
 	int connection; // A socket for each connection
 	fd_set readfds; // Set of file descriptors for select()
-	int lenaddr; // Length of the inaddr structure
+	socklen_t lenaddr; // Length of the inaddr structure
 	int child; // PID of the child process
 	int nchildren=0; // Number of child processes
 	struct timeval delay; // How long to wait inside select()
@@ -330,7 +326,7 @@ HttpRequest *http_server(void)
 	inaddr.sin_addr.s_addr=INADDR_ANY;
 	inaddr.sin_port=htons(p);
 	listener=socket(AF_INET, SOCK_STREAM, 0);
-	fprintf(stderr,"%s starting...\n", NAME);
+	fprintf(stderr,"%s starting...\n", PACKAGE_NAME);
 	if (listener < 0)
 	{
 		fprintf(stderr,"Can't create a socket\n");
@@ -357,7 +353,7 @@ HttpRequest *http_server(void)
 		fprintf(stderr,"Can't bind to any ports, giving up\n");
 		exit(1);
 	}
-	fprintf(stderr,"%s started on http://localhost:%i\n", NAME, p);
+	fprintf(stderr,"%s started on http://localhost:%i\n", PACKAGE_NAME, p);
 	listen(listener,10);
 	while (1)
 	{

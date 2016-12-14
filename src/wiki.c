@@ -19,17 +19,17 @@
 
 static char *CssData=STYLESHEET;
 static unsigned char *Favicon=FaviconData;
-int FaviconSize=FAVICONLEN;
+int FaviconSize=sizeof(FaviconData);
 
 static char *get_line_from_string(char **lines)
 {
 	int i;
 	char *z=*lines;
-	if (z[0] == '\0') return NULL;
+	if (z[0] == 0) return NULL;
 	for (i=0; z[i]; i++) if (z[i] == '\n')
 	{
-		if (i > 0 && z[i-1]=='\r') z[i-1]='\0';
-		else z[i]='\0';
+		if (i > 0 && z[i-1]=='\r') z[i-1]=0;
+		else z[i]=0;
 		i++;
 		break;
 	}
@@ -44,7 +44,7 @@ static char *check_for_link(char *line, int *skip_chars)
 	int external=0;
 	if (*p == '[')
 	{
-		*p='\0';
+		*p=0;
 		p++;
 		url=p;
 		if (!strncasecmp(p, "http://", 7)
@@ -56,26 +56,26 @@ static char *check_for_link(char *line, int *skip_chars)
 				|| *p == '?' || *p == '/') // Some special local links starts with ? or /
 		{ // External link, can be followed by title after space
 			if (*p != '?' && *p != '/') external=1;
-			while (*p != ']' && *p != '\0' && !isspace(*p)) p++;
+			while (*p != ']' && *p != 0 && !isspace(*p)) p++;
 			// title will come after space (if there is a space/title)
 			if (isspace(*p))
 			{ //title
-				*p='\0';
+				*p=0;
 				title=++p; 
-				while (  *p != ']' && *p != '\0' ) p++;
-				*p='\0';
+				while (  *p != ']' && *p != 0 ) p++;
+				*p=0;
 				p++;
 			}
 			else // no title
 			{
-				*p='\0';
+				*p=0;
 				p++;
 			}
 		}
 		else // no title, simple wiki link
 		{
-			while (*p != ']' && *p != '\0') p++;
-			*p='\0';
+			while (*p != ']' && *p != 0) p++;
+			*p=0;
 			p++;
 		}
 	}
@@ -88,11 +88,11 @@ static char *check_for_link(char *line, int *skip_chars)
 			|| !strncasecmp(p, "file://", 7))
 	{ // Bare external link
 		external=1;
-		while (*p != '\0' && !isspace(*p)) p++;
+		while (*p != 0 && !isspace(*p)) p++;
 		url=malloc(sizeof(char) * ((p-start)+2) );
 		memset(url, 0, sizeof(char) * ((p-start)+2));
 		strncpy(url, start, p-start);
-		*start='\0';
+		*start=0;
 	}
 	if (url != NULL)
 	{
@@ -101,19 +101,19 @@ static char *check_for_link(char *line, int *skip_chars)
 		// is it an image?
 		if (!title && (!strncmp(url+len-4, ".gif", 4)
 				|| !strncmp(url+len-4, ".GIF", 4)
-				|| !strncmp(url+len-4, ".PNG", 4)
-				|| !strncmp(url+len-4, ".JPG", 4)
-				|| !strncmp(url+len-5, ".JPEG", 5)
 				|| !strncmp(url+len-4, ".png", 4)
+				|| !strncmp(url+len-4, ".PNG", 4)
 				|| !strncmp(url+len-4, ".jpg", 4)
-				|| !strncmp(url+len-5, ".jpeg", 5)))
+				|| !strncmp(url+len-4, ".JPG", 4)
+				|| !strncmp(url+len-5, ".jpeg", 5)
+				|| !strncmp(url+len-5, ".JPEG", 5)))
 			// display image
 			asprintf(&result, "<img src='%s' border='0'>", url);
 		else
 		{ // no image
 			if (!title) title=url;
 			if (external)
-				asprintf(&result,"<a title='%s' target='_blank' href='%s'>%s%s</a>", url, url, title, LINKSYMBOL);
+				asprintf(&result,"<a title='%s' target='_blank' href='%s'>%s%s</a>", url, url, LINKSYMBOL, title);
 			else asprintf(&result,"<a href='%s'>%s</a>", url, title);
 		}
 		return result;
@@ -132,7 +132,7 @@ static char *file_read(char *filename)
 	if (!(fp=fopen(filename, "rb"))) return NULL;
 	str=(char *)malloc(sizeof(char)*(st.st_size+1));
 	len=fread(str, 1, st.st_size, fp);
-	if (len >= 0) str[len]='\0';
+	if (len >= 0) str[len]=0;
 	fclose(fp);
 	return str;
 }
@@ -167,34 +167,33 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 	// temporary scratch stuff
 	// q is a pointer to the start of the next line
 	char *q=p, *link, *line;
-	int i, j, skip_chars;
+	int i, j, skip_chars, header_level, br;
 	// flags, mainly for open tag states
-	int bold_on=0;
-	int italic_on=0;
-	int underline_on=0;
-	int strikethrough_on=0;
-	int pre_on=0;
-	int table_on=0;
-#define ULIST 0
-#define OLIST 1
-#define NUM_LIST_TYPES 2
+	int bold_on=0, italic_on=0, underline_on=0, strike_on=0, pre_on=0, table_on=0;
+	char *line_start;
 	struct { char ident; int depth; char *tag; } listtypes[]={
 		{ '*', 0, "ul" },
 		{ '#', 0, "ol" }
 	};
 	while ((line=get_line_from_string(&q)))
-	{
-		char *line_start=line;
+	{ // start of line
+		line_start=line;
+		header_level=0;
+		br=0;
+		if (line == 0) {
+			http_response_printf(res, "<br />\n");
+			continue; // next line
+		}
 		if (isspace(*line))
 		{
 			if (!pre_on) http_response_printf(res, "<pre>\n");
 			pre_on=1;
 			http_response_printf(res, "%s\n", line+1);
-			continue;
+			continue; // next line
 		}
 		if (!isspace(*line) && pre_on) {http_response_printf(res, "</pre>\n"); pre_on=0;}
 		// Handle ordered & unordered list, code is a bit mental...
-		for (i=0; i<NUM_LIST_TYPES; i++)
+		for (i=0; i<LISTS; i++)
 		{
 			// extra checks avoid bolding
 			if (*line == listtypes[i].ident
@@ -216,7 +215,7 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 						http_response_printf(res, "<%s>\n", listtypes[i].tag);
 				http_response_printf(res, "<li>");
 				listtypes[i].depth=item_depth;
-				goto line_content; // skip parsing any more initial chars
+				goto line_rest; // skip parsing any more initial chars
 			}
 			else if (listtypes[i].depth && !listtypes[!i].depth)
 			{
@@ -226,15 +225,14 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 				listtypes[i].depth=0;
 			}
 		}
-		// Tables
 		if (*line == '|')
-		{
+		{ // table
 			if (table_on==0)
 				http_response_printf(res, "<table class='wiki' cellspacing='0' cellpadding='4'>\n");
 			table_on=1;
 			http_response_printf(res, "<tr><td>");
 			line++;
-			goto line_content;
+			goto line_rest;
 		}
 		else
 		{
@@ -244,33 +242,36 @@ void wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
 				table_on=0;
 			}
 		}
-		int header_level=0, br=0;
+		if (*line == '-' && *(line+1) == '-' && *(line+2) == '-')
+		{ // ruler
+			http_response_printf(res, "<hr/>\n");
+			continue; // discard the rest as comment, go to next line
+		}
 		if (*line == '=')
-		{
+		{ // header
 			while (*line == '=') {header_level++; line++;}
 			if (header_level > 6) header_level=6;
 			http_response_printf(res, "<h%d>", header_level);
-			p=line;
-		}
-		else if (*line == '-' && *(line+1) == '-')
-		{
-			// rule
-			http_response_printf(res, "<hr/>\n");
-			while (*line == '-') line++;
 		}
 		else br=1;
-line_content:
-		// now process rest of the line
+line_rest:
+		// process rest of the line
 		p=line;
-		while (*line != '\0')
-		{
-			if (*line == '!' && !isspace(*(line+1)))
-			{ // escape next word - skip it
-				*line='\0';
+		while (*line != 0)
+		{ // line is not empty
+			// Skip next word if the ! is not followed by newline or space, or
+			// not followed by * unless bold is on, or not by ^ unless italic is on
+			if (*line == '!' && *(line+1) != 0 && !isspace(*(line+1)) &&
+					(*(line+1) != '^' || !italic_on) &&
+					(*(line+1) != '*' || !bold_on) &&
+					(*(line+1) != '-' || !strike_on) &&
+					(*(line+1) != '_' || !underline_on))
+			{ // skip the next word
+				*line=0;
 				http_response_printf(res, "%s", p);
 				p=++line;
-				while (*line != '\0' && !isspace(*line)) line++;
-				if (*line == '\0') continue;
+				while (*line != 0 && !isspace(*line)) line++;
+				if (*line == 0) continue;
 			}
 			else if ((link=check_for_link(line, &skip_chars)) != NULL)
 			{
@@ -286,7 +287,7 @@ line_content:
 						&& !is_wiki_format_char_or_space(*(line-1))
 						&& !bold_on) {line++; continue;}
 				if ((isspace(*(line+1)) && !bold_on)) {line++; continue;}
-				*line='\0';
+				*line=0;
 				http_response_printf(res, "%s%s", p, bold_on ? "</b>" : "<b>");
 				bold_on^=1; // reset flag
 				p=line+1;
@@ -297,7 +298,7 @@ line_content:
 						&& !is_wiki_format_char_or_space(*(line-1))
 						&& !underline_on) {line++; continue;}
 				if (isspace(*(line+1)) && !underline_on) {line++; continue;}
-				*line='\0';
+				*line=0;
 				http_response_printf(res, "%s%s", p, underline_on ? "</u>" : "<u>");
 				underline_on^=1; // reset flag
 				p=line+1;
@@ -306,11 +307,11 @@ line_content:
 			{ // strikethrough
 				if (line_start != line
 						&& !is_wiki_format_char_or_space(*(line-1))
-						&& !strikethrough_on) {line++; continue;}
-				if (isspace(*(line+1)) && !strikethrough_on) {line++; continue;}
-				*line='\0';
-				http_response_printf(res, "%s%s", p, strikethrough_on ? "</del>" : "<del>");
-				strikethrough_on^=1; // reset flag
+						&& !strike_on) {line++; continue;}
+				if (isspace(*(line+1)) && !strike_on) {line++; continue;}
+				*line=0;
+				http_response_printf(res, "%s%s", p, strike_on ? "</del>" : "<del>");
+				strike_on^=1; // reset flag
 				p=line+1;
 			}
 			else if (*line == '^')
@@ -319,14 +320,14 @@ line_content:
 						&& !is_wiki_format_char_or_space(*(line-1))
 						&& !italic_on) {line++; continue;}
 				if (isspace(*(line+1)) && !italic_on) {line++; continue;}
-				*line='\0';
+				*line=0;
 				http_response_printf(res, "%s%s", p, italic_on ? "</i>" : "<i>");
 				italic_on^=1; // reset flag
 				p=line+1;
 			}
 			else if (*line == '|' && table_on) // table column
 			{
-				*line='\0';
+				*line=0;
 				http_response_printf(res, "%s", p);
 				http_response_printf(res, "</td><td>\n");
 				p=line+1;
@@ -334,7 +335,7 @@ line_content:
 			line++;
 		} // next word
 		// accumalated text left over
-		if (*p != '\0') http_response_printf(res, "%s", p);
+		if (*p != 0) http_response_printf(res, "%s", p);
 		if (br) http_response_printf(res, "<br/>\n");
 		// close any html tags that could be still open
 		if (listtypes[ULIST].depth) http_response_printf(res, "</li>");
@@ -416,13 +417,13 @@ WikiPageList **wiki_get_pages(int *n_pages, char *expr)
 	while (n--)
 	{
 		if ((namelist[n]->d_name)[0] == '.'
-				|| !strcmp(namelist[n]->d_name, "favicon.ico")
-				|| !strcmp(namelist[n]->d_name, "didiwiki.css")) goto cleanup;
+				|| !strcmp(namelist[n]->d_name, FAVICON)
+				|| !strcmp(namelist[n]->d_name, CSS)) goto cleanup;
 		if (expr != NULL)
 		{ // Super Simple Search
 			char *data=NULL;
 			if ((data=file_read(namelist[n]->d_name)) != NULL)
-				if (strcasestr(data, expr) == NULL)
+				if (strcasestr(data, expr) == 0)
 					if (strcmp(namelist[n]->d_name, expr) != 0) goto cleanup;
 		}
 		stat(namelist[n]->d_name, &st);
@@ -526,7 +527,8 @@ void wiki_handle_http_request(HttpRequest *req)
 		if (access("Home", R_OK) != 0) wiki_redirect(res, "/Home?create");
 		page="/Home";
 	}
-	if (!strcmp(page, "/didiwiki.css"))
+	page++; // skip slash
+	if (!strcmp(page, CSS))
 	{
 		// Return CSS page
 		http_response_set_content_type(res, "text/css");
@@ -534,7 +536,7 @@ void wiki_handle_http_request(HttpRequest *req)
 		http_response_send(res);
 		exit(0);
 	}
-	if (!strcmp(page, "/favicon.ico"))
+	if (!strcmp(page, FAVICON))
 	{
 		// Return favicon
 		http_response_set_content_type(res, "image/ico");
@@ -542,7 +544,6 @@ void wiki_handle_http_request(HttpRequest *req)
 		http_response_send(res);
 		exit(0);
 	}
-	page++; // skip slash
 	// Safety: issue a malformed request for any paths (there shouldn't need to be any)
 	if (strchr(page, '/'))
 	{
@@ -600,38 +601,40 @@ int wiki_init(void)
 {
 	char datadir[512]={ 0 };
 	struct stat st;
-	if (getenv("DIDIWIKIHOME")) snprintf(datadir, 512, getenv("DIDIWIKIHOME"));
-	else
-	{
-		if (getenv("HOME") == NULL)
-		{
+	if (getenv(HOMEVAR)) snprintf(datadir, 512, "%s", getenv(HOMEVAR));
+	else {
+		if (getenv("HOME") == NULL) {
 			fprintf(stderr, "Unable to get home directory, is HOME set?\n");
 			exit(1);
 		}
-		snprintf(datadir, 512, "%s/.didiwiki", getenv("HOME"));
+		snprintf(datadir, 512, "%s/%s", getenv("HOME"), HOMEDIR);
 	}
-	// Check if ~/.didiwiki exists and create if not
+	// Check if datadir exists and create if not
 	if (stat(datadir, &st) != 0)
 		if (mkdir(datadir, 0755) == -1)
 		{
 			fprintf(stderr, "Unable to create '%s', giving up.\n", datadir);
 			exit(1);
 		}
-	chdir(datadir);
+	if (chdir(datadir))
+	{
+		fprintf(stderr, "Unable to change to '%s', giving up.\n", datadir);
+		exit(1);
+	}
 	// Write Default Help + Home page and stylesheet if it doesn't exist
 	if (access("Help", R_OK) != 0) file_write("Help", HELPTEXT);
 	if (access("Home", R_OK) != 0) file_write("Home", HOMETEXT);
-	if (access("didiwiki.css", R_OK) != 0) file_write("didiwiki.css", CssData);
+	if (access(CSS, R_OK) != 0) file_write(CSS, CssData);
 	// Read in optional stylesheet
-	if (access("didiwiki.css", R_OK) == 0) CssData=file_read("didiwiki.css");
+	if (access(CSS, R_OK) == 0) CssData=file_read(CSS);
 	// Read optional favicon
-	if (access("favicon.ico", R_OK) == 0)
+	if (access(FAVICON, R_OK) == 0)
 	{
 		struct stat st;
 		FILE* fp;
-		if (!stat("favicon.ico", &st) && (fp=fopen("favicon.ico", "rb")))
+		if (!stat(FAVICON, &st) && (fp=fopen(FAVICON, "rb")))
 		{
-			Favicon=(char *)malloc(sizeof(char)*(st.st_size+1));
+			Favicon=(unsigned char *)malloc(sizeof(char)*(st.st_size+1));
 			FaviconSize=fread(Favicon, 1, st.st_size, fp);
 			fclose(fp);
 		}

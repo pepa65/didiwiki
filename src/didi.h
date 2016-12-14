@@ -14,17 +14,11 @@
  *  GNU General Public License for more details.
  */
 
-#ifndef _HAVE_DIDIWIKI_HEADER
-#define _HAVE_DIDIWIKI_HEADER
-
-#define _GNU_SOURCE
-
 #include "config.h"
 
 #if defined(__MINGW32__)
 
 // This is broken
-
 #undef DATADIR
 
 #include <windows.h>
@@ -35,23 +29,6 @@
 #include <sys/timeb.h>
 #include <sys/types.h>
 #include <dirent.h>
-
-#ifndef WNOHANG
-#define WNOHANG 1
-#endif
-
-#ifndef F_OK
-#    define F_OK 00
-#endif
-#ifndef X_OK
-#    define X_OK 01
-#endif
-#ifndef W_OK
-#    define W_OK 02
-#endif
-#ifndef R_OK
-#    define R_OK 04
-#endif
 
 #else
 
@@ -78,22 +55,7 @@
 
 #endif
 
-#define TRUE  1
-#define FALSE 0
-
-
 #include "util.h"
 #include "http.h"
 #include "wiki.h"
 
-#define HTMLHEAD "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n\
-<html xmlns='http://www.w3.org/1999/xhtml'>\n\
-<head>\n\
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\n\
-<link rel='SHORTCUT ICON' href='/favicon.ico' />\n\
-<link media='all' href='/didiwiki.css' rel='stylesheet' type='text/css' />\n\
-<title>%s</title>\n\
-</head>\n\
-<body>\n"
-
-#endif

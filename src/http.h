@@ -1,7 +1,11 @@
-#ifndef _HAVE_HTTP_HEADER
-#define _HAVE_HTTP_HEADER
+// Ports to try listening on, starting at PORTSTART
 #define PORTSTART 8000
 #define PORTEND 8088
+// Maximum number of child processes before things slow down
+#define MAX_PARALLEL 5
+#ifndef WNOHANG
+#define WNOHANG 1
+#endif
 typedef struct HttpResponse HttpResponse;
 typedef struct HttpRequest HttpRequest;
 typedef struct HttpRequestParam HttpRequestParam;
@@ -22,4 +26,3 @@ void http_response_send_headers(HttpResponse *res);
 void http_response_send(HttpResponse *res);
 void sigint(int sig);
 void sigterm(int sig);
-#endif
