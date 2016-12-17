@@ -1,3 +1,7 @@
+// didi.c
+// DidiWiki - a small lightweight wiki engine
+// Copyright 2004 Matthew Allum <mallum@o-hand.com> GPL-2+
+
 #include "didi.h"
 
 void usage()

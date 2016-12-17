@@ -1,6 +1,6 @@
-PREFIXDIR  = $(prefix)
+PREFIXDIR = $(prefix)
 PKGDATADIR = $(datadir)/matchbox
-DATADIR    = $(datadir)
+DATADIR = $(datadir)
 
 AM_CFLAGS = $(GCC_FLAGS)
 
@@ -8,10 +8,5 @@ AM_CPPFLAGS = -DDATADIR=\"$(DATADIR)\" -DPKGDATADIR=\"$(PKGDATADIR)\" -DPREFIX=\
 
 bin_PROGRAMS = didiwiki
 
-didiwiki_SOURCES = didi.c  didi.h  http.c  http.h  \
-                   util.c  util.h  wiki.c  wiki.h  \
+didiwiki_SOURCES = didi.c didi.h http.c http.h util.c util.h wiki.c wiki.h \
                    wikitext.h
-
-
-
-

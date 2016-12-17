@@ -1,3 +1,7 @@
+// http.h
+// DidiWiki - a small lightweight wiki engine
+// Copyright 2004 Matthew Allum <mallum@o-hand.com> GPL-2+
+
 // Ports to try listening on, starting at PORTSTART
 #define PORTSTART 8000
 #define PORTEND 8088

@@ -1,4 +1,4 @@
-DidiWiki 0.65
+DidiWiki 0.66
 =============
 
 DidiWiki is a small and simple WikiWikiWeb implementation written in C.
@@ -56,5 +56,5 @@ Notes & Explanations
 - It was written in C as to fit easily on a PDA..!
 
 - To fully clean the build directory: make maintainer-clean
-	- If configure gets deleted, autoconf will build it again, but
-	  PACKAGE_URL will be lost
+	- To regenerate configure use autoconf
+	- To regenerate Makefile.in use automake

@@ -1,3 +1,7 @@
+// wiki.h
+// DidiWiki - a small lightweight wiki engine
+// Copyright 2004 Matthew Allum <mallum@o-hand.com> GPL-2+
+
 #ifndef R_OK
 #define R_OK 4
 #endif
