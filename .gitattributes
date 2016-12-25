@@ -1,0 +1,7 @@
+aclocal.m4 linguist-vendored
+compile linguist-vendored
+config.status linguist-vendored
+configure linguist-vendored
+depcomp linguist-vendored
+install-sh linguist-vendored
+missing linguist-vendored
