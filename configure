@@ -583,7 +583,7 @@ PACKAGE_TARNAME='didiwiki'
 PACKAGE_VERSION='0.66'
 PACKAGE_STRING='DidiWiki 0.66'
 PACKAGE_BUGREPORT='solusos@passchier.net'
-PACKAGE_URL='https://github.com/pepa65/didiwiki'
+PACKAGE_URL='https://gitlab.com/pepa65/didiwiki'
 
 ac_unique_file="src/util.c"
 # Factoring default headers for most tests.
@@ -1375,7 +1375,7 @@ Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
 
 Report bugs to <solusos@passchier.net>.
-DidiWiki home page: <https://github.com/pepa65/didiwiki>.
+DidiWiki home page: <https://gitlab.com/pepa65/didiwiki>.
 _ACEOF
 ac_status=$?
 fi
@@ -5902,7 +5902,7 @@ Configuration commands:
 $config_commands
 
 Report bugs to <solusos@passchier.net>.
-DidiWiki home page: <https://github.com/pepa65/didiwiki>."
+DidiWiki home page: <https://gitlab.com/pepa65/didiwiki>."
 
 _ACEOF
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
