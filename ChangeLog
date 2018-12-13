@@ -1,30 +1,30 @@
-2018-06-05 released by pepa65 <solusos@passchier.net>
+2018-06-05 released by pepa65 <pepa65@passchier.net>
 	Moved to gitlab: https://gitlab.com/pepa65/didiwiki
 
-2016-12-18 released by pepa65 <solusos@passchier.net>
+2016-12-18 released by pepa65 <pepa65@passchier.net>
 	Replace 'missing', regenerate build files
 	Cleanup header comments in source files
 
-2016-12-13 released by pepa65 <solusos@passchier.net>
+2016-12-13 released by pepa65 <pepa65@passchier.net>
 	Numerous little bugs squashed
 	Clarified wiki syntax
 	Cleaned up naming
 	Cleaned up build system
 
-2016-12-09 released by pepa65 <solusos@passchier.net>
+2016-12-09 released by pepa65 <pepa65@passchier.net>
 	More cleanup
 	New default favicon
 	Added Debian patches:
 	- redirect_patch
 	- search_engine_patch
 
-2016-09-27 0.61 released by pepa65 <solusos@passchier.net>
+2016-09-27 0.61 released by pepa65 <pepa65@passchier.net>
 	Improved rendering
 	Adjusted formatting
 	Removed commented code
 	Tweaked stylesheet
 
-2016-09-07 0.6 released by pepa65 <solusos@passchier.net>
+2016-09-07 0.6 released by pepa65 <pepa65@passchier.net>
 	Hosted on Github: https://github.com/pepa65/didiwiki
 	Version increased
 	Changed formatting & layout style
